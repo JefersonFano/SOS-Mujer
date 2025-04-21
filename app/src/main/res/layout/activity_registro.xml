@@ -6,5 +6,186 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".actividades.RegistroActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/regLblRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/morado"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/lblRegistro"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_margin="15dp">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/regTxtNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:inputType="text"
+                android:maxLength="100"
+                android:hint="@string/hintNombre"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/regTxtApellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:inputType="text"
+                android:maxLength="100"
+                android:hint="@string/hintApellidos"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/regTxtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:inputType="textEmailAddress"
+                android:maxLength="100"
+                android:hint="@string/hintCorreo"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/sesTxtClave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:inputType="textPassword"
+                android:hint="@string/hintContraseña"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="15dp"
+            android:weightSum="2">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
+                <EditText
+                    android:id="@+id/regTxtDni"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:hint="@string/hintDni" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
+                <EditText
+                    android:id="@+id/regTxtNumero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="9"
+                    android:hint="@string/hintNumero" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/regTxtDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="100"
+                android:hint="@string/hintDireccion"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/regBtnRegistrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="15dp"
+                android:text="@string/btnRegistrar"
+                android:backgroundTint="@color/morado"
+                android:textColor="@color/white"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="2dp"
+                app:cornerRadius="8dp"/>
+            <Button
+                android:id="@+id/regBtnCancelar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
+                android:text="@string/btnCancelar"
+                android:backgroundTint="@color/morado"
+                android:textColor="@color/white"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="2dp"
+                app:cornerRadius="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
