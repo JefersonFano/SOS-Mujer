@@ -3,6 +3,9 @@
     <!--Labels-->
     <string name="lblCarga">Cargando aplicación...</string>
     <string name="lblRegistro">Registro</string>
+    <string name="lblPregRegistro">¿No tienes una cuenta? ¡Regístrate!</string>
+    <string name="lblPregInicio">¿Ya tienes una cuenta? ¡Inicia Sesión!</string>
+    <string name="lblRecordar">Recordar Sesión</string>
     <string name="lblBienvenida">Bienvenida {nombre}</string>
 
     <!--Buttons-->

@@ -7,4 +7,122 @@
     android:layout_height="match_parent"
     tools:context=".actividades.SesionActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/regLblRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/morado"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/btnIniciar"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_margin="15dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/logo"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/sesTxtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:inputType="textEmailAddress"
+                android:maxLength="100"
+                android:hint="@string/hintCorreo"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/sesTxtContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:inputType="textPassword"
+                android:hint="@string/hintContraseña"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/sesChkRecordar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lblRecordar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/sesBtnIniciarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="15dp"
+                android:text="@string/btnIniciar"
+                android:backgroundTint="@color/morado"
+                android:textColor="@color/white"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="2dp"
+                app:cornerRadius="8dp"/>
+            <Button
+                android:id="@+id/sesBtnCancelar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
+                android:text="@string/btnCancelar"
+                android:backgroundTint="@color/morado"
+                android:textColor="@color/white"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="2dp"
+                app:cornerRadius="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/sesLblPregRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/morado"
+                android:text="@string/lblPregRegistro"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
