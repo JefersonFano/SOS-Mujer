@@ -1,8 +1,10 @@
 package com.example.sos_mujer.actividades;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import com.example.sos_mujer.R;
 
 public class RegistroActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnRegistrar, btnCancelar;
+    TextView lblPregInicio;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,17 +29,26 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
         });
         btnRegistrar = findViewById(R.id.regBtnRegistrar);
         btnCancelar = findViewById(R.id.regBtnCancelar);
+        lblPregInicio = findViewById(R.id.regLblPregInicio);
 
         btnRegistrar.setOnClickListener(this);
         btnCancelar.setOnClickListener(this);
+        lblPregInicio.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.regBtnRegistrar)
+        if (v.getId() == R.id.regLblPregInicio)
+            iniciarSesion();
+        else if (v.getId() == R.id.regBtnRegistrar)
             registrar();
         else if (v.getId() == R.id.regBtnCancelar)
             cancelar();
+    }
+
+    private void iniciarSesion() {
+        Intent iSesion = new Intent(this, SesionActivity.class);
+        startActivity(iSesion);
     }
 
     private void registrar() {

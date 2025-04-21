@@ -32,9 +32,9 @@ public class CargaActivity extends AppCompatActivity implements View.OnClickList
         });
 
         barCarga = findViewById(R.id.carBarCarga);
-        btnIniciar = findViewById(R.id.actBtnIniciarSesion);
-        btnRegistrar = findViewById(R.id.actBtnRegistrarse);
-        txtCargar = findViewById(R.id.txtCargar);
+        btnIniciar = findViewById(R.id.carBtnIniciarSesion);
+        btnRegistrar = findViewById(R.id.carBtnRegistrarse);
+        txtCargar = findViewById(R.id.carTxtCargar);
 
         btnIniciar.setOnClickListener(this);
         btnRegistrar.setOnClickListener(this);
@@ -63,9 +63,9 @@ public class CargaActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.actBtnIniciarSesion)
+        if (v.getId() == R.id.carBtnIniciarSesion)
             iniciarSesion();
-        else if (v.getId() == R.id.actBtnRegistrarse)
+        else if (v.getId() == R.id.carBtnRegistrarse)
             registrar();
     }
 
