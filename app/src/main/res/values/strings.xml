@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">SOS-Mujer</string>
+    <!--Labels-->
     <string name="lblCarga">Cargando aplicación...</string>
-    <string name="sesBtnIniciar">Iniciar Sesión</string>
-    <string name="sesBtnRegistrar">Regístrate</string>
+    <string name="lblRegistro">Registro</string>
+    <string name="lblBienvenida">Bienvenida {nombre}</string>
+
+    <!--Buttons-->
+    <string name="btnIniciar">Iniciar Sesión</string>
+    <string name="btnRegistrar">Registrarse</string>
+    <string name="btnCancelar">Cancelar</string>
+
+    <!--Hints-->
+    <string name="hintNombre">Nombre(s)</string>
+    <string name="hintApellidos">Apellidos</string>
+    <string name="hintDni">Dni</string>
+    <string name="hintDireccion">Dirección</string>
+    <string name="hintNumero">Número de teléfono</string>
+    <string name="hintCorreo">Correo electrónico</string>
+    <string name="hintContraseña">Contraseña</string>
 </resources>

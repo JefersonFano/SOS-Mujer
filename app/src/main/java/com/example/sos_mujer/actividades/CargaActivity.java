@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 
-public class CargaActivity extends AppCompatActivity {
+public class CargaActivity extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar barCarga;
     Button btnIniciar, btnRegistrar;
@@ -23,12 +23,21 @@ public class CargaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_carga);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         barCarga = findViewById(R.id.carBarCarga);
-        btnIniciar = findViewById(R.id.btnIniciarSesion);
-        btnRegistrar = findViewById(R.id.btnRegistrarse);
+        btnIniciar = findViewById(R.id.actBtnIniciarSesion);
+        btnRegistrar = findViewById(R.id.actBtnRegistrarse);
         txtCargar = findViewById(R.id.txtCargar);
+
+        btnIniciar.setOnClickListener(this);
+        btnRegistrar.setOnClickListener(this);
 
         Thread tCarga = new Thread(() -> {
             for (int i = 0; i <= barCarga.getMax(); i++) {
@@ -50,5 +59,23 @@ public class CargaActivity extends AppCompatActivity {
             });
         });
         tCarga.start();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.actBtnIniciarSesion)
+            iniciarSesion();
+        else if (v.getId() == R.id.actBtnRegistrarse)
+            registrar();
+    }
+
+    private void iniciarSesion() {
+        Intent iIniciar = new Intent(this, SesionActivity.class);
+        startActivity(iIniciar);
+    }
+
+    private void registrar() {
+        Intent iRegistro = new Intent(this, RegistroActivity.class);
+        startActivity(iRegistro);
     }
 }
