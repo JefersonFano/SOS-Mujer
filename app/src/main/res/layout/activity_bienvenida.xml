@@ -66,13 +66,13 @@
                 android:layout_margin="10dp">
 
                 <ImageButton
-                    android:id="@+id/btnContacto"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/contacto"
                     android:background="@color/gris2"/>
 
                 <TextView
+                    android:id="@+id/lblContacto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/lblContEmergencia"
@@ -91,13 +91,13 @@
                 android:layout_margin="10dp">
 
                 <ImageButton
-                    android:id="@+id/btnReportar"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/reporte"
                     android:background="@color/gris2"/>
 
                 <TextView
+                    android:id="@+id/lblReportar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/lblReportar"
@@ -116,13 +116,13 @@
                 android:layout_margin="10dp">
 
                 <ImageButton
-                    android:id="@+id/btnPanico"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/boton_panico"
                     android:background="@color/gris2"/>
 
                 <TextView
+                    android:id="@+id/lblPanico"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/lblPanico"
@@ -130,7 +130,7 @@
                     android:textColor="#000" />
             </LinearLayout>
 
-            <!-- Botón Más -->
+            <!-- Botón Perfil -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -141,13 +141,13 @@
                 android:layout_margin="10dp">
 
                 <ImageButton
-                    android:id="@+id/btnMas"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/perfil"
                     android:background="@color/gris2"/>
 
                 <TextView
+                    android:id="@+id/lblPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/lblPerfil"
