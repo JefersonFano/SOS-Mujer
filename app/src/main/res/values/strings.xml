@@ -13,6 +13,11 @@
     <string name="lblSonido">Sonido</string>
     <string name="lblAplicar">Aplicar</string>
     <string name="lblRestaurar">Restaurar</string>
+    <string name="lblContEmergencia">Contacto de emergencia</string>
+    <string name="lblReportar">Reportar abuso</string>
+    <string name="lblPanico">Botón de pánico</string>
+    <string name="lblPerfil">Perfil</string>
+    <string name="lblSosMujer">SOS Mujer</string>
     <string name="lblIdioma">Elegir Idioma:</string>
 
     <!--Buttons-->
