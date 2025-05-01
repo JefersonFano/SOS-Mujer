@@ -13,6 +13,18 @@
         android:theme="@style/Theme.SOSMujer"
         tools:targetApi="31">
         <activity
+            android:name=".actividades.PerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actividades.PanicoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actividades.ContactoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actividades.ReportarActivity"
+            android:exported="false" />
+        <activity
             android:name=".actividades.BienvenidaActivity"
             android:exported="false" />
         <activity
