@@ -10,20 +10,163 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <fragment
-            android:id="@+id/frgMenu"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/regLblRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.example.sos_mujer.fragmentos.MenuFragment"
-            tools:layout="@layout/fragment_menu"/>
+            android:background="@color/morado"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/lblSosMujer"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_margin="15dp"
+        android:paddingTop="60dp">
 
         <TextView
             android:id="@+id/bieLblSaludo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/lblHola" />
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/lblHola"
+            android:textSize="20sp"
+            android:padding="5dp"/>
 
+        <GridLayout
+            android:id="@+id/gridOpciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:alignmentMode="alignMargins"
+            android:rowOrderPreserved="false"
+            android:layout_gravity="center"
+            android:layout_marginBottom="40dp">
+
+            <!-- Botón Contacto de emergencia -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/gris2"
+                android:layout_margin="10dp">
+
+                <ImageButton
+                    android:id="@+id/btnContacto"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/contacto"
+                    android:background="@color/gris2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblContEmergencia"
+                    android:textAlignment="center"
+                    android:textColor="#000" />
+            </LinearLayout>
+
+            <!-- Botón Reportar abuso -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/gris2"
+                android:layout_margin="10dp">
+
+                <ImageButton
+                    android:id="@+id/btnReportar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/reporte"
+                    android:background="@color/gris2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblReportar"
+                    android:textAlignment="center"
+                    android:textColor="#000" />
+            </LinearLayout>
+
+            <!-- Botón Botón de pánico -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/gris2"
+                android:layout_margin="10dp">
+
+                <ImageButton
+                    android:id="@+id/btnPanico"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/boton_panico"
+                    android:background="@color/gris2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblPanico"
+                    android:textAlignment="center"
+                    android:textColor="#000" />
+            </LinearLayout>
+
+            <!-- Botón Más -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/gris2"
+                android:layout_margin="10dp">
+
+                <ImageButton
+                    android:id="@+id/btnMas"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/perfil"
+                    android:background="@color/gris2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblPerfil"
+                    android:textAlignment="center"
+                    android:textColor="#000" />
+            </LinearLayout>
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom">
+            <fragment
+                android:id="@+id/frgMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.example.sos_mujer.fragmentos.MenuFragment"
+                tools:layout="@layout/fragment_menu"/>
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
