@@ -7,6 +7,13 @@
     <string name="lblPregInicio">¿Ya tienes una cuenta? ¡Inicia Sesión!</string>
     <string name="lblRecordar">Recordar Sesión</string>
     <string name="lblBienvenida">Bienvenida {nombre}</string>
+    <string name="lblHola">Hola</string>
+    <string name="lblConfiguracion">Configuración</string>
+    <string name="lblNotificacion">Recibir notificaciones</string>
+    <string name="lblSonido">Sonido</string>
+    <string name="lblAplicar">Aplicar</string>
+    <string name="lblRestaurar">Restaurar</string>
+    <string name="lblIdioma">Elegir Idioma:</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
@@ -21,4 +28,15 @@
     <string name="hintNumero">Número de teléfono</string>
     <string name="hintCorreo">Correo electrónico</string>
     <string name="hintContraseña">Contraseña</string>
+
+    <!--Hints-->
+    <string-array name="cboIdioma">
+        <item>Español</item>
+        <item>Quechua</item>
+        <item>Aymara</item>
+        <item>Inglés</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
