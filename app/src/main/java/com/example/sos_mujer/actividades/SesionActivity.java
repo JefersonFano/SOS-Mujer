@@ -54,9 +54,9 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void iniciarSesion(String correo, String contraseña) {
-        Intent iInicio = new Intent(this, InicioActivity.class);
-        iInicio.putExtra("user", "nombre");
-        startActivity(iInicio);
+        Intent iBienvenida = new Intent(this, BienvenidaActivity.class);
+        iBienvenida.putExtra("usuario", "Rosa");
+        startActivity(iBienvenida);
         finish();
     }
 
