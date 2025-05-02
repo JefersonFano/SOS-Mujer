@@ -3,6 +3,7 @@ package com.example.sos_mujer.actividades;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -36,6 +37,7 @@ public class BienvenidaActivity extends AppCompatActivity implements View.OnClic
         String usuario = getIntent().getStringExtra("usuario");
         lblSaludo.setText("Hola " + usuario);
 
+        lblReportar.setOnClickListener(this);
         lblContacto.setOnClickListener(this);
         lblReportar.setOnClickListener(this);
         lblPanico.setOnClickListener(this);

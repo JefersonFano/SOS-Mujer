@@ -9,8 +9,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/regLblRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/morado"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="@string/lblSosMujer"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,14 +42,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginVertical="15dp"
-                    android:text="@string/lblConfiguracion"
-                    android:textSize="25sp"/>
 
                 <TextView
                     android:layout_width="match_parent"
