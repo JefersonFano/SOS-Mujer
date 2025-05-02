@@ -19,11 +19,14 @@
     <string name="lblPerfil">Perfil</string>
     <string name="lblSosMujer">SOS Mujer</string>
     <string name="lblIdioma">Elegir Idioma:</string>
+    <string name="lblAbuso">Elegir Abuso:</string>
+    <string name="lblMultimedia">Multimedia</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
     <string name="btnRegistrar">Registrarse</string>
     <string name="btnCancelar">Cancelar</string>
+    <string name="btnReportar">Reportar</string>
 
     <!--Hints-->
     <string name="hintNombre">Nombre(s)</string>
@@ -33,13 +36,21 @@
     <string name="hintNumero">Número de teléfono</string>
     <string name="hintCorreo">Correo electrónico</string>
     <string name="hintContraseña">Contraseña</string>
+    <string name="hintDescripcion">Descripcion</string>
 
-    <!--Hints-->
+    <!--Arrays-->
     <string-array name="cboIdioma">
         <item>Español</item>
         <item>Quechua</item>
         <item>Aymara</item>
         <item>Inglés</item>
+    </string-array>
+
+    <string-array name="cboAbuso">
+        <item>Robo</item>
+        <item>Violencia física</item>
+        <item>Violencia sexual</item>
+        <item>Acoso</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

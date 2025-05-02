@@ -1,11 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".actividades.ReportarActivity">
+    tools:context=".actividades.RegistroActivity">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <!-- Título fijo arriba -->
+  <TextView
+      android:id="@+id/repLblReportar"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:background="@color/morado"
+      android:gravity="center"
+      android:padding="20dp"
+      android:text="@string/lblReportar"
+      android:textColor="@color/white"
+      android:textSize="24sp"
+      android:textStyle="bold"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent" />
+
+  <!-- ScrollView con el contenido -->
+  <ScrollView
+      android:id="@+id/scrollContenido"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:fillViewport="true"
+      app:layout_constraintTop_toBottomOf="@id/repLblReportar"
+      app:layout_constraintBottom_toTopOf="@id/botonesLayout"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+      <!-- Aquí pones todos los campos como estaban -->
+      <!-- TextInputLayouts, Spinner, ImageView, etc. -->
+
+      <!-- Campo Descripción -->
+      <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+          app:boxCornerRadiusTopStart="12dp"
+          app:boxCornerRadiusBottomEnd="12dp">
+        <EditText
+            android:id="@+id/repTxtDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:inputType="text"
+            android:maxLength="300"
+            android:hint="@string/hintDescripcion"/>
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <!-- Campo Dirección -->
+      <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+          app:boxCornerRadiusTopStart="12dp"
+          app:boxCornerRadiusBottomEnd="12dp">
+        <EditText
+            android:id="@+id/repTxtDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLength="100"
+            android:hint="@string/hintDireccion"/>
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <!-- Spinner e imagen -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="15dp"
+          android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/cboAbuso"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/lblAbuso"/>
+
+          <Spinner
+              android:id="@+id/repCboAbuso"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:entries="@array/cboAbuso"
+              android:paddingVertical="10dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/repBtnTomarFoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:background="@color/white"
+            android:src="@drawable/camara"/>
+      </LinearLayout>
+
+      <!-- Imagen previa -->
+      <ImageView
+          android:id="@+id/imgVistaPrevia"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:layout_marginHorizontal="20dp"
+          android:src="@drawable/previo"/>
+
+    </LinearLayout>
+  </ScrollView>
+
+  <!-- Botones fijos abajo -->
+  <LinearLayout
+      android:id="@+id/botonesLayout"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_margin="16dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent">
+
+    <Button
+        android:id="@+id/repBtnReportar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="8dp"
+        android:text="@string/btnReportar"
+        android:backgroundTint="@color/morado"
+        android:textColor="@color/white"
+        app:cornerRadius="8dp" />
+
+    <Button
+        android:id="@+id/repBtnCancelar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:text="@string/btnCancelar"
+        android:backgroundTint="@color/morado"
+        android:textColor="@color/white"
+        app:cornerRadius="8dp" />
+  </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
