@@ -7,4 +7,220 @@
     android:layout_height="match_parent"
     tools:context=".actividades.PerfilActivity">
 
+    <!-- Encabezado -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/perfilLblTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/morado"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="Mi Perfil"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Cuerpo del Perfil -->
+    <LinearLayout
+        android:id="@+id/bodyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:gravity="top"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout">
+
+        <!-- Nombre y Apellidos en una fila -->
+        <!-- Nombre y Apellidos en una fila -->
+        <LinearLayout
+            android:id="@+id/nameRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/perfilTxtNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="Mariana "
+                    android:textSize="20sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/perfilTxtApellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="Olivarez"
+                    android:textSize="20sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+        <!-- Correo -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/perfilTxtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="mariana.prime@gmail.com"
+                android:textSize="20sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Teléfono -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/perfilTxtTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="997 254 897"
+                android:textSize="20sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Dirección -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addressLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/perfilTxtDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Av.Paruro"
+                android:textSize="20sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Persona de Confianza 1 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/contact1Layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/perfilTxtConfianza1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Madre"
+                android:textSize="20sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Persona de Confianza 2 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/contact2Layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/perfilTxtConfianza2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Padre"
+                android:textSize="20sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Botones Guardar y Cancelar -->
+        <LinearLayout
+            android:id="@+id/buttonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/perfilBtnGuardar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/morado"
+                android:text="Guardar"
+                android:textColor="@color/white"
+                app:cornerRadius="8dp"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="2dp" />
+
+            <Button
+                android:id="@+id/perfilBtnCancelar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/morado"
+                android:text="Cancelar"
+                android:textColor="@color/white"
+                app:cornerRadius="8dp"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="2dp" />
+        </LinearLayout>
+
+        <!-- Botón Cerrar Sesión debajo -->
+        <Button
+            android:id="@+id/perfilBtnCerrarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/morado"
+            android:text="Cerrar Sesión"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            app:strokeColor="@android:color/white"
+            app:strokeWidth="2dp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
