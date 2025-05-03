@@ -24,6 +24,19 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean recordar = getSharedPreferences("datos_usuario", MODE_PRIVATE)
+                .getBoolean("recordar", false);
+
+        if (recordar) {
+            // Ir directamente a la pantalla de bienvenida si ya está recordado
+            String correo = getSharedPreferences("datos_usuario", MODE_PRIVATE)
+                    .getString("correo", "Usuario");
+
+            Intent iBienvenida = new Intent(this, BienvenidaActivity.class);
+            iBienvenida.putExtra("usuario", correo); // Usamos el correo como nombre
+            startActivity(iBienvenida);
+            finish(); // Finalizamos esta actividad para que no pueda volver atrás
+        }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sesion);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -58,6 +71,20 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
         iBienvenida.putExtra("usuario", "Rosa");
         startActivity(iBienvenida);
         finish();
+
+        if(chkRecordar.isChecked()) {
+            getSharedPreferences("datos_usuario", MODE_PRIVATE)
+                    .edit()
+                    .putString("correo", correo)
+                    .putBoolean("recordar", true)
+                    .apply();
+        } else {
+
+            getSharedPreferences("datos_usuario", MODE_PRIVATE)
+                    .edit()
+                    .clear()
+                    .apply();
+        }
     }
 
     private void registrar() {
