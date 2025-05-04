@@ -6,9 +6,76 @@
     tools:context=".fragmentos.MapaFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/morado"
+            android:gravity="center"
+            android:padding="20dp"
+            android:textSize="24sp"
+            android:text="SOS MUJER"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
+        <TextView
+            android:id="@+id/lblLoction"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/lblCompartirUbicacion"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imagenMapa"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/mapa2"
+            android:scaleType="center"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/lblUbicacionCompartida"
+            android:textColor="#555555"
+            android:layout_marginTop="20dp"
+
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/mapaBtnDetener"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/btnDetenerBusqueda"
+            android:backgroundTint="@color/morado"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 </FrameLayout>

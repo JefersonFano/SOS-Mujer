@@ -61,7 +61,7 @@
                 android:id="@+id/carBtnRegistrarse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btnRegistrar"
+                android:text="@string/btnRegistrarse"
                 android:visibility="gone"
                 android:backgroundTint="@color/morado"
                 android:textColor="@color/white"
