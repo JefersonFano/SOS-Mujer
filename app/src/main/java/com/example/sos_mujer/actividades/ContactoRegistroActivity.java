@@ -13,21 +13,21 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 
-public class ContactoActivity extends AppCompatActivity implements View.OnClickListener {
+public class ContactoRegistroActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btnRegistrar, btnCancelar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_contacto);
+        setContentView(R.layout.activity_contacto_registro);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        btnRegistrar = findViewById(R.id.contBtnRegistrar);
-        btnCancelar = findViewById(R.id.contBtnCancelar);
+        btnRegistrar = findViewById(R.id.agrContBtnRegistrar);
+        btnCancelar = findViewById(R.id.agrContBtnCancelar);
 
         btnRegistrar.setOnClickListener(this);
         btnCancelar.setOnClickListener(this);
@@ -35,15 +35,13 @@ public class ContactoActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.contBtnRegistrar)
+        if (v.getId() == R.id.agrContBtnRegistrar)
             registrar();
-        else if (v.getId() == R.id.contBtnCancelar)
+        else if (v.getId() == R.id.agrContBtnCancelar)
             cancelar();
     }
 
     private void registrar() {
-        Intent iContactoRegistro = new Intent(this, ContactoRegistroActivity.class);
-        startActivity(iContactoRegistro);
     }
 
     private void cancelar() {

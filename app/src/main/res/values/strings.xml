@@ -31,15 +31,20 @@
     <string name="lblAcercaApp">Acerca de la app</string>
     <string name="lblProbarAlerta">Probar alerta de emergencia</string>
     <string name="lblComunidad">Comunidad</string>
+    <string name="lblNombreContacto">Nombre</string>
+    <string name="lblCancelar">Cancelar</string>
+    <string name="lblTituloContacto">Agregar contacto de emergencia</string>
+    <string name="lblRegistrar">Registrar</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
-    <string name="btnRegistrar">Registrarse</string>
+    <string name="btnRegistrarse">Registrarse</string>
+    <string name="btnRegistrar">Registrar</string>
     <string name="btnCancelar">Cancelar</string>
     <string name="btnReportar">Reportar</string>
     <string name="btnCerrarSesion">Cerrar Sesión</string>
     <string name="btnGuardar">Guardar</string>
-    <string name="btnRegresar">Regresar</string>
+    <string name="btnAgregar">Agregar</string>
 
     <!--Hints-->
     <string name="hintNombre">Nombre(s)</string>
@@ -50,6 +55,8 @@
     <string name="hintCorreo">Correo electrónico</string>
     <string name="hintContraseña">Contraseña</string>
     <string name="hintDescripcion">Descripcion</string>
+    <string name="hintNumContacto">Número de teléfono</string>
+    <string name="hintNombreContacto">Nombre(s)</string>
 
     <!--Arrays-->
     <string-array name="cboIdioma">
