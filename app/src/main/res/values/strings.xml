@@ -36,6 +36,8 @@
     <string name="lblTituloContacto">Agregar contacto de emergencia</string>
     <string name="lblRegistrar">Registrar</string>
     <string name="lblSOS">SOS</string>
+    <string name="lblCompartirUbicacion">Compartir Ubicación</string>
+    <string name="lblUbicacionCompartida">Tu ubicación está siendo compartida...</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
@@ -46,6 +48,7 @@
     <string name="btnCerrarSesion">Cerrar Sesión</string>
     <string name="btnGuardar">Guardar</string>
     <string name="btnAgregar">Agregar</string>
+    <string name="btnDetenerBusqueda">Detener Busqueda</string>
 
     <!--Hints-->
     <string name="hintNombre">Nombre(s)</string>
