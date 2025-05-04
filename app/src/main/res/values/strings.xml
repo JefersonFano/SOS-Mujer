@@ -9,7 +9,7 @@
     <string name="lblBienvenida">Bienvenida {nombre}</string>
     <string name="lblHola">Hola</string>
     <string name="lblConfiguracion">Configuración</string>
-    <string name="lblNotificacion">Recibir notificaciones</string>
+    <string name="lblNotificaciones">Recibir notificaciones</string>
     <string name="lblSonido">Sonido</string>
     <string name="lblAplicar">Aplicar</string>
     <string name="lblRestaurar">Restaurar</string>
@@ -21,12 +21,23 @@
     <string name="lblIdioma">Elegir Idioma:</string>
     <string name="lblAbuso">Elegir Abuso:</string>
     <string name="lblMultimedia">Multimedia</string>
+    <string name="lblEnvioAlertas">Intervalo de envío de alertas</string>
+    <string name="lblActivarBoton">Activar botón de pánico con volumen (x3)</string>
+    <string name="lblFuncionalidades">Funcionalidades</string>
+    <string name="lblApariencia">Apariencia y Usabilidad</string>
+    <string name="lblModoOscuro">Modo oscuro</string>
+    <string name="lblTamañoTexto">Tamaño del texto</string>
+    <string name="lblExtras">Extras</string>
+    <string name="lblAcercaApp">Acerca de la app</string>
+    <string name="lblProbarAlerta">Probar alerta de emergencia</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
     <string name="btnRegistrar">Registrarse</string>
     <string name="btnCancelar">Cancelar</string>
     <string name="btnReportar">Reportar</string>
+    <string name="btnCerrarSesion">Cerrar Sesión</string>
+    <string name="btnGuardar">Guardar</string>
 
     <!--Hints-->
     <string name="hintNombre">Nombre(s)</string>
@@ -51,6 +62,13 @@
         <item>Violencia física</item>
         <item>Violencia sexual</item>
         <item>Acoso</item>
+    </string-array>
+
+    <string-array name="cboIntervalo">
+        <item>Cada 30 segundos</item>
+        <item>Cada 1 minuto</item>
+        <item>Cada 5 minutos</item>
+        <item>Solo una vez</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
