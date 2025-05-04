@@ -7,4 +7,133 @@
     android:layout_height="match_parent"
     tools:context=".actividades.ContactoActivity">
 
+    <!-- Título de la pantalla -->
+    <TextView
+        android:id="@+id/tituloContactos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/morado"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="Lista de Contactos de Emergencia"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <!-- CardView para Susana Estrada -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toBottomOf="@id/tituloContactos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/contactName1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Susana Estrada"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/contactPhone1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="985631276"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView para Laura Castillo -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toBottomOf="@id/cardView1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/contactName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laura Castillo"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/contactPhone2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="963257418"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="305dp"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/btnAgregar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/morado"
+            android:text="@string/lblRegistrar"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            app:strokeWidth="2dp" />
+
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/morado"
+            android:text="@string/lblCancelar"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            app:strokeWidth="2dp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

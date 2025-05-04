@@ -19,12 +19,16 @@
     <string name="lblPerfil">Perfil</string>
     <string name="lblSosMujer">SOS Mujer</string>
     <string name="lblIdioma">Elegir Idioma:</string>
-
+    <string name="lblNombreContacto">Nombre</string>
+    <string name="lblCancelar">Cancelar</string>
+    <string name="lblTituloContacto">Agregar contacto de emergencia</string>
+    <string name="lblRegistrar">Registrar</string>
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
     <string name="btnRegistrar">Registrarse</string>
     <string name="btnCancelar">Cancelar</string>
-
+    <string name="btnRegistar">Registrar</string>
+    <string name="btnAgregar">Agregar</string>
     <!--Hints-->
     <string name="hintNombre">Nombre(s)</string>
     <string name="hintApellidos">Apellidos</string>
@@ -33,6 +37,8 @@
     <string name="hintNumero">Número de teléfono</string>
     <string name="hintCorreo">Correo electrónico</string>
     <string name="hintContraseña">Contraseña</string>
+    <string name="hintNumContacto">Número de teléfono</string>
+    <string name="hintNombreContacto">Nombre(s)</string>
 
     <!--Hints-->
     <string-array name="cboIdioma">
