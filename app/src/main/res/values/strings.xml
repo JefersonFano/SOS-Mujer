@@ -30,6 +30,7 @@
     <string name="lblExtras">Extras</string>
     <string name="lblAcercaApp">Acerca de la app</string>
     <string name="lblProbarAlerta">Probar alerta de emergencia</string>
+    <string name="lblComunidad">Comunidad</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
@@ -38,6 +39,7 @@
     <string name="btnReportar">Reportar</string>
     <string name="btnCerrarSesion">Cerrar Sesión</string>
     <string name="btnGuardar">Guardar</string>
+    <string name="btnRegresar">Regresar</string>
 
     <!--Hints-->
     <string name="hintNombre">Nombre(s)</string>
