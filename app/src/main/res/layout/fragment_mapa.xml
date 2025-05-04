@@ -24,10 +24,6 @@
             android:text="SOS MUJER"
             android:textColor="@color/white"
             android:textStyle="bold" />
-
-
-
-
     </LinearLayout>
 
     <LinearLayout
