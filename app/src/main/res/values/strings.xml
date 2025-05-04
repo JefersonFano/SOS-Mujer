@@ -35,6 +35,7 @@
     <string name="lblCancelar">Cancelar</string>
     <string name="lblTituloContacto">Agregar contacto de emergencia</string>
     <string name="lblRegistrar">Registrar</string>
+    <string name="lblSOS">SOS</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
