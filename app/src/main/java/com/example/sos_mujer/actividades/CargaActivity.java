@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
+import com.example.sos_mujer.sqlite.SosMujerSqlite;
 
 public class CargaActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,7 +50,17 @@ public class CargaActivity extends AppCompatActivity implements View.OnClickList
                     e.printStackTrace();
                 }
             }
-
+            SosMujerSqlite sosMujerSqlite = new SosMujerSqlite(getApplicationContext());
+            if(sosMujerSqlite.recordarSesion()){
+                Intent iBienvenida = new Intent(getApplicationContext(), BienvenidaActivity.class);
+                String usuario = sosMujerSqlite.getString("nombre") + " "+sosMujerSqlite.getString("apellido");
+                iBienvenida.putExtra("usuario", usuario);
+                startActivity(iBienvenida);
+            }else {
+                Intent iSesion = new Intent(getApplicationContext(), SesionActivity.class);
+                startActivity(iSesion);
+            }
+            finish();
             // Después de la carga, ocultar barra y mostrar botones
             runOnUiThread(() -> {
                 barCarga.setVisibility(View.GONE);

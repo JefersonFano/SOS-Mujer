@@ -15,6 +15,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
+import com.example.sos_mujer.clases.Hash;
+import com.example.sos_mujer.sqlite.SosMujerSqlite;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class SesionActivity extends AppCompatActivity implements View.OnClickListener {
     EditText txtCorreo, txtContraseña;
@@ -53,7 +61,21 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
             cancelar();
     }
 
-    private void iniciarSesion(String correo, String contraseña) {
+    private void iniciarSesion(String correo, String contrasenia) {
+        SosMujerSqlite sosMujerSqlite = new SosMujerSqlite(this);
+        Hash hash = new Hash();
+        contrasenia = hash.StringToHash(contrasenia, "SHA256").toLowerCase();
+
+        if(chkRecordar.isChecked()) {
+            try {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                Date fechaNac = format.parse("1999-10-21");
+                sosMujerSqlite.agregarUsuario(1, "Daniela", "Gonzales", correo,
+                        contrasenia, "78654123", "987654321", "Av. Templo del sol 543", fechaNac);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
         Intent iBienvenida = new Intent(this, BienvenidaActivity.class);
         iBienvenida.putExtra("usuario", "Rosa");
         startActivity(iBienvenida);

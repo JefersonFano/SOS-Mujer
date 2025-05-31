@@ -43,7 +43,7 @@
                 android:id="@+id/regTxtNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="5dp"
                 android:inputType="text"
                 android:maxLength="100"
                 android:hint="@string/hintNombre"/>
@@ -59,7 +59,7 @@
                 android:id="@+id/regTxtApellido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="5dp"
                 android:inputType="text"
                 android:maxLength="100"
                 android:hint="@string/hintApellidos"/>
@@ -75,7 +75,7 @@
                 android:id="@+id/regTxtCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="5dp"
                 android:inputType="textEmailAddress"
                 android:maxLength="100"
                 android:hint="@string/hintCorreo"/>
@@ -84,12 +84,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusBottomEnd="12dp">
             <EditText
-                android:id="@+id/regTxtContraseña"
+                android:id="@+id/regTxtContrasenia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -97,11 +98,72 @@
                 android:hint="@string/hintContraseña"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            app:passwordToggleEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
+            <EditText
+                android:id="@+id/regTxtConfirmarContrasenia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:inputType="textPassword"
+                android:hint="@string/hintConfirmarContraseña"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginVertical="15dp"
+            android:layout_marginVertical="5dp"
+            android:weightSum="2">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
+                <EditText
+                    android:id="@+id/regTxtDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:hint="@string/hintDireccion"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
+                <EditText
+                    android:id="@+id/regTxtFechaNacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hintFechaNacimiento"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:maxLength="10"
+                    android:inputType="date"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="5dp"
             android:weightSum="2">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -130,7 +192,7 @@
                 app:boxCornerRadiusTopStart="12dp"
                 app:boxCornerRadiusBottomEnd="12dp">
                 <EditText
-                    android:id="@+id/regTxtNumero"
+                    android:id="@+id/regTxtTelefono"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -139,20 +201,13 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <CheckBox
+            android:id="@+id/regChkTerminos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxCornerRadiusTopStart="12dp"
-            app:boxCornerRadiusBottomEnd="12dp">
-            <EditText
-                android:id="@+id/regTxtDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLength="100"
-                android:hint="@string/hintDireccion"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:editable="false"
+            android:text="@string/hintTerminos"
+            tools:ignore="Deprecated"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -24,7 +24,7 @@
             android:background="@color/morado"
             android:gravity="center"
             android:padding="20dp"
-            android:text="Mi Perfil"
+            android:text="@string/lblMiPerfil"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
-                    android:text="Mariana "
+                    android:text="Rosa"
                     android:textSize="20sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:text="mariana.prime@gmail.com"
+                android:text="rosa.olivarez@gmail.com"
                 android:textSize="20sp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:text="Madre"
+                android:text="Susana Estrada"
                 android:textSize="20sp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -169,7 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:text="Padre"
+                android:text="Laura Castillo"
                 android:textSize="20sp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -183,13 +183,13 @@
             android:weightSum="2">
 
             <Button
-                android:id="@+id/perfilBtnGuardar"
+                android:id="@+id/perfilBtnActualizar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/morado"
-                android:text="@string/btnGuardar"
+                android:text="@string/btnActualizar"
                 android:textColor="@color/white"
                 app:cornerRadius="8dp"
                 app:strokeColor="@android:color/white"
