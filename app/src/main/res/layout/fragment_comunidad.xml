@@ -24,7 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenedor con Scroll para tarjetas -->
     <ScrollView
         android:id="@+id/comunidadScroll"
         android:layout_width="0dp"
@@ -60,7 +59,7 @@
                         android:id="@+id/txtNombreReporta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nombre: Ana Pérez"
+                        android:text="Reporte 1"
                         android:textStyle="bold"
                         android:textColor="@color/morado"
                         android:textSize="16sp" />
@@ -93,7 +92,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nombre: Maria Elena"
+                        android:text="Reporte 2"
                         android:textStyle="bold"
                         android:textColor="@color/morado"
                         android:textSize="16sp" />
@@ -125,7 +124,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nombre: Daniela Mendoza"
+                        android:text="Reporte 3"
                         android:textStyle="bold"
                         android:textColor="@color/morado"
                         android:textSize="16sp" />
