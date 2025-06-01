@@ -242,6 +242,6 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void cancelar() {
-        System.exit(1);
+        finishAffinity();
     }
 }

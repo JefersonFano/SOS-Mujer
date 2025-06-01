@@ -72,7 +72,8 @@
             android:text="@string/btnRegistrar"
             android:textColor="@color/white"
             app:cornerRadius="8dp"
-            app:strokeWidth="2dp" />
+            app:strokeWidth="2dp"
+            android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/contBtnCancelar"
@@ -84,6 +85,7 @@
             android:text="@string/btnCancelar"
             android:textColor="@color/white"
             app:cornerRadius="8dp"
-            app:strokeWidth="2dp" />
+            app:strokeWidth="2dp"
+            android:textAllCaps="false"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

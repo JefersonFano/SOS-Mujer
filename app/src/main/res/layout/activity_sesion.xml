@@ -95,7 +95,8 @@
                 android:textColor="@color/white"
                 app:strokeColor="@android:color/white"
                 app:strokeWidth="2dp"
-                app:cornerRadius="8dp"/>
+                app:cornerRadius="8dp"
+                android:textAllCaps="false"/>
             <Button
                 android:id="@+id/sesBtnCancelar"
                 android:layout_width="match_parent"
@@ -107,7 +108,8 @@
                 android:textColor="@color/white"
                 app:strokeColor="@android:color/white"
                 app:strokeWidth="2dp"
-                app:cornerRadius="8dp"/>
+                app:cornerRadius="8dp"
+                android:textAllCaps="false"/>
         </LinearLayout>
 
         <LinearLayout
