@@ -60,14 +60,23 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void cancelar() {
-        System.exit(1);
+        finishAffinity();
     }
 
     private void cerrarSesion() {
-        SosMujerSqlite sosMujerSqlite = new SosMujerSqlite(this); // en vez de getContext()q
-        sosMujerSqlite.eliminarUsuario(1);
+        SosMujerSqlite db = new SosMujerSqlite(this);
+        int idUsuario = db.getUsuarioId();
+        if (idUsuario != -1) {
+            db.eliminarUsuario(idUsuario);
+        }
         Intent iSesion = new Intent(this, SesionActivity.class);
         startActivity(iSesion);
         finish();
+
+        /*SosMujerSqlite sosMujerSqlite = new SosMujerSqlite(this); // en vez de getContext()q
+        sosMujerSqlite.eliminarUsuario(1);
+        Intent iSesion = new Intent(this, SesionActivity.class);
+        startActivity(iSesion);
+        finish();*/
     }
 }

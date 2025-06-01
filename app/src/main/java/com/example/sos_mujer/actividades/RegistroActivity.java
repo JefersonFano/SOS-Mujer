@@ -178,7 +178,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
                 int status = rawJsonResponse.isEmpty() ? 0 : Integer.parseInt(rawJsonResponse);
                 if (status == 1){
-                    Toast.makeText(getApplicationContext(), "Usuario Agreagado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Usuario Agregado", Toast.LENGTH_SHORT).show();
                     Intent iSesion = new Intent(getApplicationContext(), SesionActivity.class);
                     startActivity(iSesion);
                     finish();
