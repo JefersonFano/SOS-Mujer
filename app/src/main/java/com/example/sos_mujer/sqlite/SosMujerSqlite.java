@@ -92,4 +92,14 @@ public class SosMujerSqlite extends SQLiteOpenHelper{
         }
         return false;
     }
+
+    public int getUsuarioId() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id FROM Usuario LIMIT 1", null);
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+        return -1;
+    }
+
 }

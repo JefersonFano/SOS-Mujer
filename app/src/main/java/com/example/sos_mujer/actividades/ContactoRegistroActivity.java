@@ -1,50 +1,76 @@
 package com.example.sos_mujer.actividades;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
+import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
 
-public class ContactoRegistroActivity extends AppCompatActivity implements View.OnClickListener {
+import org.json.JSONObject;
 
+public class ContactoRegistroActivity extends AppCompatActivity {
+
+    EditText txtNombre, txtNumero;
     Button btnRegistrar, btnCancelar;
+    private final static String URL_REGISTRAR = "http://sos-mujer.atwebpages.com/ws/agregarContacto.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_contacto_registro);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        txtNombre = findViewById(R.id.NombreContacto);
+        txtNumero = findViewById(R.id.TelefonoContacto);
         btnRegistrar = findViewById(R.id.agrContBtnRegistrar);
         btnCancelar = findViewById(R.id.agrContBtnCancelar);
 
-        btnRegistrar.setOnClickListener(this);
-        btnCancelar.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.agrContBtnRegistrar)
-            registrar();
-        else if (v.getId() == R.id.agrContBtnCancelar)
-            cancelar();
+        btnRegistrar.setOnClickListener(v -> registrar());
+        btnCancelar.setOnClickListener(v -> finish());
     }
 
     private void registrar() {
-    }
+        String nombre = txtNombre.getText().toString().trim();
+        String numero = txtNumero.getText().toString().trim();
 
-    private void cancelar() {
-        System.exit(1);
+        if (nombre.isEmpty() || numero.isEmpty()) {
+            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SosMujerSqlite db = new SosMujerSqlite(this);
+        int usuarioId = db.getUsuarioId();
+
+        RequestParams params = new RequestParams();
+        params.put("usuario_id", usuarioId);
+        params.put("nombre", nombre);
+        params.put("numero", numero);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(URL_REGISTRAR, params, new com.loopj.android.http.JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                try {
+                    if (response.getInt("status") == 1) {
+                        Toast.makeText(getApplicationContext(), "Contacto registrado", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), response.getString("mensaje"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Error al procesar respuesta", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(getApplicationContext(), "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
