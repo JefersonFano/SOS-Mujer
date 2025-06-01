@@ -147,7 +147,8 @@
         android:text="@string/btnReportar"
         android:backgroundTint="@color/morado"
         android:textColor="@color/white"
-        app:cornerRadius="8dp" />
+        app:cornerRadius="8dp"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/repBtnCancelar"
@@ -158,7 +159,8 @@
         android:text="@string/btnCancelar"
         android:backgroundTint="@color/morado"
         android:textColor="@color/white"
-        app:cornerRadius="8dp" />
+        app:cornerRadius="8dp"
+        android:textAllCaps="false"/>
   </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

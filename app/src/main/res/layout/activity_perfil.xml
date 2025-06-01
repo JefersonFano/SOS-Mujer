@@ -193,7 +193,8 @@
                 android:textColor="@color/white"
                 app:cornerRadius="8dp"
                 app:strokeColor="@android:color/white"
-                app:strokeWidth="2dp" />
+                app:strokeWidth="2dp"
+                android:textAllCaps="false"/>
 
             <Button
                 android:id="@+id/perfilBtnCancelar"
@@ -206,7 +207,8 @@
                 android:textColor="@color/white"
                 app:cornerRadius="8dp"
                 app:strokeColor="@android:color/white"
-                app:strokeWidth="2dp" />
+                app:strokeWidth="2dp"
+                android:textAllCaps="false"/>
         </LinearLayout>
 
         <!-- Botón Cerrar Sesión debajo -->
@@ -220,7 +222,8 @@
             android:textColor="@color/white"
             app:cornerRadius="8dp"
             app:strokeColor="@android:color/white"
-            app:strokeWidth="2dp" />
+            app:strokeWidth="2dp"
+            android:textAllCaps="false"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

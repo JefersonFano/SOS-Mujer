@@ -96,7 +96,8 @@
                     android:textColor="@color/white"
                     app:strokeWidth="2dp"
                     app:cornerRadius="8dp"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText"
+                    android:textAllCaps="false"/>
 
                 <Button
                     android:id="@+id/agrContBtnCancelar"
@@ -110,7 +111,8 @@
                     android:textColor="@color/white"
                     app:strokeWidth="2dp"
                     app:cornerRadius="8dp"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="RtlHardcoded"
+                    android:textAllCaps="false"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
