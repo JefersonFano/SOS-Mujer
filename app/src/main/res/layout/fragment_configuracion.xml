@@ -83,32 +83,6 @@
                     android:layout_height="wrap_content"
                     android:max="100"
                     android:progress="50" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <Button
-                        android:id="@+id/frgCfgBtnAplicar"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lblAplicar"
-                        android:textAllCaps="false"
-                        android:layout_marginEnd="8dp" />
-
-                    <Button
-                        android:id="@+id/frgCfgBtnRestaurar"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lblRestaurar"
-                        android:textAllCaps="false"
-                        android:layout_marginStart="8dp" />
-                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -142,6 +116,7 @@
                     android:text="@string/lblActivarBoton"/>
 
                 <TextView
+                    android:id="@+id/frgCfgLblTamañoTexto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lblEnvioAlertas"
@@ -191,11 +166,36 @@
                     android:layout_marginTop="10dp" />
 
                 <SeekBar
-                    android:id="@+id/frgCfgSeekTexto"
+                    android:id="@+id/frgCfgBarTamañoTexto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="30"
                     android:progress="16"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/frgCfgBtnAplicar"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lblAplicar"
+                        android:textAllCaps="false"
+                        android:layout_marginEnd="8dp" />
+
+                    <Button
+                        android:id="@+id/frgCfgBtnRestaurar"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lblRestaurar"
+                        android:textAllCaps="false"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

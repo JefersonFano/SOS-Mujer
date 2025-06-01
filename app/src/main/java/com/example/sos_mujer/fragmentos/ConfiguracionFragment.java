@@ -25,10 +25,10 @@ import com.example.sos_mujer.R;
  */
 public class ConfiguracionFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
-    Spinner cboIdiomas;
-    CheckBox chkNotificacion;
-    TextView lblSonido;
-    SeekBar barSonido;
+    Spinner cboIdiomas, cboEnvioAlertas;
+    CheckBox chkNotificacion, chkVolumenPanico;
+    TextView lblSonido, lblTamañoTexto;
+    SeekBar barSonido, barTamañoTexto;
     Button btnAplicar, btnRestaurar;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -77,9 +77,13 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_configuracion, container, false);
         cboIdiomas = vista.findViewById(R.id.confCboIdioma);
+        cboEnvioAlertas = vista.findViewById(R.id.confCboIntervalo);
         chkNotificacion = vista.findViewById(R.id.frgCfgChkNotificaciones);
+        chkVolumenPanico = vista.findViewById(R.id.frgCfgChkPanicoVolumen);
         lblSonido = vista.findViewById(R.id.frgCfgLblSonido);
         barSonido = vista.findViewById(R.id.frgCfgBarSonido);
+        lblTamañoTexto = vista.findViewById(R.id.frgCfgLblTamañoTexto);
+        barTamañoTexto = vista.findViewById(R.id.frgCfgBarTamañoTexto);
         btnAplicar = vista.findViewById(R.id.frgCfgBtnAplicar);
         btnRestaurar = vista.findViewById(R.id.frgCfgBtnRestaurar);
 
@@ -96,10 +100,16 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
         int idioma = preferences.getInt("idioma",0);
         boolean notificaciones = preferences.getBoolean("notificaciones",false);
         int sonido = preferences.getInt("sonido",100);
+        boolean volumenPanico = preferences.getBoolean("volumenPanico",false);
+        int envioAlertas = preferences.getInt("envioAlertas",0);
+        int tamañoTexto = preferences.getInt("tamañoTexto",100);
 
         cboIdiomas.setSelection(idioma);
+        cboEnvioAlertas.setSelection(envioAlertas);
         chkNotificacion.setChecked(notificaciones);
+        chkVolumenPanico.setChecked(volumenPanico);
         barSonido.setProgress(sonido);
+        barTamañoTexto.setProgress(tamañoTexto);
     }
 
     @Override
@@ -114,16 +124,22 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
         SharedPreferences preferences = getActivity().getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();   //objeto para guardar datos
         editor.putInt("idioma",cboIdiomas.getSelectedItemPosition()); //capturar idioma
+        editor.putInt("envioAlertas",cboEnvioAlertas.getSelectedItemPosition()); //capturar intervalo de envio de alertas
         editor.putBoolean("notificaciones",chkNotificacion.isChecked());//capturar check
+        editor.putBoolean("volumenPanico",chkVolumenPanico.isChecked());
         editor.putInt("sonido",barSonido.getProgress());
+        editor.putInt("tamañoTexto",barTamañoTexto.getProgress());
         editor.apply(); //escribir en el archivo
         Toast.makeText(getContext(),"Preferencias guardadas",Toast.LENGTH_SHORT).show(); //cargar datos
     }
 
     private void restaurar() {
         cboIdiomas.setSelection(0);
+        cboEnvioAlertas.setSelection(0);
         chkNotificacion.setChecked(true);
+        chkVolumenPanico.setChecked(false);
         barSonido.setProgress(100);
+        barTamañoTexto.setProgress(50);
     }
 
     @Override
@@ -136,6 +152,15 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
                 default: volumen += String.valueOf(progress);break;
             }
             lblSonido.setText(volumen);
+        }
+        if(seekBar == barTamañoTexto){
+            String tamaño = "Tamaño: ";
+            switch (progress){
+                case 0: tamaño += "mínimo";break;
+                case 100: tamaño += "máximo";break;
+                default: tamaño += String.valueOf(progress);break;
+            }
+            lblSonido.setText(tamaño);
         }
     }
 
