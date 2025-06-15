@@ -185,7 +185,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/lblAplicar"
                         android:textAllCaps="false"
-                        android:layout_marginEnd="8dp" />
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/morado"/>
 
                     <Button
                         android:id="@+id/frgCfgBtnRestaurar"
@@ -194,7 +195,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/lblRestaurar"
                         android:textAllCaps="false"
-                        android:layout_marginStart="8dp" />
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/morado"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
