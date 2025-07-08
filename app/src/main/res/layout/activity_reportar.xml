@@ -75,6 +75,18 @@
             android:inputType="text"
             android:maxLength="100"
             android:hint="@string/hintDireccion"/>
+
+        <Button
+            android:id="@+id/repBtnUbicacionActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/morado"
+            android:text="@string/btnMiUbicacionActual"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            android:textAllCaps="false"/>
+
       </com.google.android.material.textfield.TextInputLayout>
 
       <!-- Spinner e imagen -->

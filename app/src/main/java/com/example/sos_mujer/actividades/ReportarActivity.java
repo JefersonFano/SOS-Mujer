@@ -3,6 +3,10 @@ package com.example.sos_mujer.actividades;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,15 +29,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import cz.msebera.android.httpclient.Header;
 import com.example.sos_mujer.R;
-
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.Base64;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -44,7 +45,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import cz.msebera.android.httpclient.Header;
 
 public class ReportarActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_PHOTO = 1;
@@ -52,25 +56,31 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
     Spinner cboAbusos;
     ImageButton btnTomarFoto;
     ImageView imgVistaPrevia;
-    Button btnReportar, btnCancelar;
+    Button btnReportar, btnCancelar, btnUbicacion;
     String sRutaTemporal;
     Uri uPhoto;
+
+    double latitud = 0.0;
+    double longitud = 0.0;
+    FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reportar);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         btnTomarFoto = findViewById(R.id.repBtnTomarFoto);
         imgVistaPrevia = findViewById(R.id.imgVistaPrevia);
         btnReportar = findViewById(R.id.repBtnReportar);
         btnCancelar = findViewById(R.id.repBtnCancelar);
-        btnCancelar = findViewById(R.id.repBtnCancelar);
+        btnUbicacion = findViewById(R.id.repBtnUbicacionActual);
         txtDescripcion = findViewById(R.id.repTxtDescripcion);
         txtDireccion = findViewById(R.id.repTxtDireccion);
         cboAbusos = findViewById(R.id.repCboAbuso);
@@ -78,23 +88,60 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
         btnTomarFoto.setOnClickListener(this);
         btnReportar.setOnClickListener(this);
         btnCancelar.setOnClickListener(this);
+        btnUbicacion.setOnClickListener(v -> obtenerUbicacion());
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         validarPermisos();
     }
 
     private void validarPermisos() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
+        }
+    }
+
+    private void obtenerUbicacion() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            return;
+        }
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+
+                try {
+                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(latitud, longitud, 1);
+                    if (!addresses.isEmpty()) {
+                        String direccion = addresses.get(0).getAddressLine(0);
+                        txtDireccion.setText(direccion);
+                    } else {
+                        txtDireccion.setText("Lat: " + latitud + ", Lng: " + longitud);
+                    }
+                } catch (IOException e) {
+                    txtDireccion.setText("Lat: " + latitud + ", Lng: " + longitud);
+                }
+
+                Toast.makeText(this, "Ubicación obtenida", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "No se pudo obtener ubicación", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.repBtnTomarFoto)
+        if (v.getId() == R.id.repBtnTomarFoto)
             tomarFoto();
-        else if(v.getId() == R.id.repBtnReportar)
+        else if (v.getId() == R.id.repBtnReportar)
             reportar();
-        else if(v.getId() == R.id.repBtnCancelar)
+        else if (v.getId() == R.id.repBtnCancelar)
             cancelar();
     }
 
@@ -109,9 +156,9 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private File createImage() throws IOException{
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fileName = "JPG_"+timeStamp;
+    private File createImage() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String fileName = "JPG_" + timeStamp;
         File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imagen = File.createTempFile(fileName, ".jpg", directorio);
         sRutaTemporal = imagen.getAbsolutePath();
@@ -121,16 +168,13 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_PHOTO){
-            if(resultCode == RESULT_OK){
-                imgVistaPrevia.setImageURI(uPhoto);
-                Toast.makeText(this, "Acepto", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                File tmp = new File(sRutaTemporal);
-                tmp.delete();
-                Toast.makeText(this, "Cancelo", Toast.LENGTH_SHORT).show();
-            }
+        if (requestCode == REQUEST_PHOTO && resultCode == RESULT_OK) {
+            imgVistaPrevia.setImageURI(uPhoto);
+            Toast.makeText(this, "Foto capturada", Toast.LENGTH_SHORT).show();
+        } else {
+            File tmp = new File(sRutaTemporal);
+            tmp.delete();
+            Toast.makeText(this, "Foto cancelada", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -143,18 +187,22 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
             return Base64.encodeToString(byteArray, Base64.NO_WRAP);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return "";
         }
     }
 
-
     private void reportar() {
-        String descripcion = txtDescripcion.getText().toString();
-        String direccion = txtDireccion.getText().toString();
+        String descripcion = txtDescripcion.getText().toString().trim();
+        String direccion = txtDireccion.getText().toString().trim();
         String tipo = cboAbusos.getSelectedItem().toString();
-        String fecha = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(new Date());
-        String base64Foto = convertirImagenABase64(sRutaTemporal);
+        String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date());
 
+        if (descripcion.isEmpty() || direccion.isEmpty() || sRutaTemporal == null || sRutaTemporal.isEmpty()) {
+            Toast.makeText(this, "Completa todos los campos y toma una foto", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String base64Foto = convertirImagenABase64(sRutaTemporal);
         SosMujerSqlite db = new SosMujerSqlite(this);
         int usuario_id = db.getUsuarioId();
 
@@ -162,7 +210,9 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
         params.put("usuario_id", usuario_id);
         params.put("foto", base64Foto);
         params.put("tipo", tipo);
-        params.put("fecha", fecha);
+        params.put("fecha", fechaHora);
+        params.put("latitud", latitud);
+        params.put("longitud", longitud);
         params.put("lugar", direccion);
         params.put("descripcion", descripcion);
 
@@ -171,7 +221,7 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Toast.makeText(getApplicationContext(), "Reporte enviado correctamente", Toast.LENGTH_SHORT).show();
-                finish(); // vuelve a la actividad anterior
+                finish();
             }
 
             @Override

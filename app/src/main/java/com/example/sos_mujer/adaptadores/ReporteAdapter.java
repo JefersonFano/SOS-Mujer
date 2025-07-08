@@ -46,7 +46,7 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ViewHold
         holder.imgFoto.setImageBitmap(bitmap);
         holder.lblTipo.setText("Tipo: " + reporte.getTipo());
         Date fecha = reporte.getFecha();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         holder.lblFecha.setText("Fecha: " + format.format(fecha));
         holder.lblLugar.setText("Lugar: " + reporte.getLugar());
         holder.lblDescripcion.setText("Descripción: " + reporte.getDescripcion());
