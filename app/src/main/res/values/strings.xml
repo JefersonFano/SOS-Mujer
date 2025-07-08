@@ -31,7 +31,7 @@
     <string name="lblExtras">Extras</string>
     <string name="lblAcercaApp">Acerca de la app</string>
     <string name="lblProbarAlerta">Probar alerta de emergencia</string>
-    <string name="lblComunidad">Reportes</string>
+    <string name="lblComunidad">Comunidad</string>
     <string name="lblNombreContacto">Nombre</string>
     <string name="lblCancelar">Cancelar</string>
     <string name="lblTituloContacto">Agregar contacto de emergencia</string>
@@ -40,12 +40,17 @@
     <string name="lblCompartirUbicacion">Compartir Ubicación</string>
     <string name="lblUbicacionCompartida">Tu ubicación está siendo compartida...</string>
     <string name="lblMiPerfil">Mi perfil</string>
+    <string name="frgRepLblTipo">Tipo: </string>
+    <string name="frgRepLblFecha">Fecha: </string>
+    <string name="frgRepLblLugar">Lugar: </string>
+    <string name="frgRepLblDescripcion">Descripción: </string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
     <string name="btnRegistrarse">Registrarse</string>
     <string name="btnRegistrar">Registrar</string>
     <string name="btnCancelar">Cancelar</string>
+    <string name="btnMisReportes">Mis reportes</string>
     <string name="btnReportar">Reportar</string>
     <string name="btnCerrarSesion">Cerrar Sesión</string>
     <string name="btnActualizar">Actualizar</string>
