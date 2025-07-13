@@ -44,6 +44,9 @@
     <string name="frgRepLblFecha">Fecha: </string>
     <string name="frgRepLblLugar">Lugar: </string>
     <string name="frgRepLblDescripcion">Descripción: </string>
+    <string name="lblEnciarMensaje">Enviar Mensaje de Emergencia</string>
+    <string name="lblPresionaBoton">Presiona el botón de pánico para enviar tu ubicación y mensaje de emergencia a tus contactos registrados.</string>
+    <string name="lblNecesitasAyuda">¡Pánico! Necesitas ayuda urgente</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>

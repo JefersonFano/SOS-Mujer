@@ -138,7 +138,7 @@
                 android:text="Av.Paruro"
                 android:textSize="20sp"/>
         </com.google.android.material.textfield.TextInputLayout>
-s
+
         <!-- Botones Guardar y Cancelar -->
         <LinearLayout
             android:id="@+id/buttonsLayout"
@@ -146,7 +146,7 @@ s
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="2">
 
             <Button
                 android:id="@+id/perfilBtnActualizar"

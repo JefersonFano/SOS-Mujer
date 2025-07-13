@@ -1,21 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutPanico"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF3F3"
-    android:gravity="center">
+    tools:context=".actividades.PanicoActivity">
 
-    <Button
-        android:id="@+id/btnEnviarSOS"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:text="@string/lblSOS"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
+    <!-- Título de la pantalla (Texto de bienvenida) -->
+    <TextView
+        android:id="@+id/tvBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lblNecesitasAyuda"
+        android:textSize="22sp"
+        android:textColor="@color/morado"
         android:gravity="center"
-        android:layout_margin="16dp"
-        android:background="@drawable/boton_circular"/>
-</RelativeLayout>
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"/>
+
+    <!-- Descripción de emergencia -->
+    <TextView
+        android:id="@+id/tvDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lblPresionaBoton"
+        android:textSize="16sp"
+        android:textColor="@color/morado"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvBienvenida"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="24dp"/>
+
+    <!-- Botón de Pánico -->
+    <Button
+        android:id="@+id/btnPanico"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lblEnciarMensaje"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/morado"
+        app:cornerRadius="24dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDescripcion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="32dp"
+        android:layout_marginBottom="50dp"/>
+
+    <!-- Icono de emergencia (Opcional) -->
+    <ImageView
+        android:id="@+id/ivEmergencia"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_sos_mujeres_morado"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toBottomOf="@id/tvDescripcion"
+        app:layout_constraintBottom_toTopOf="@id/btnPanico"
+        android:layout_marginBottom="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
