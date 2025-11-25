@@ -1,5 +1,6 @@
 package com.example.sos_mujer.actividades;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.example.sos_mujer.utils.LanguageHelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -30,8 +32,15 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
     EditText txtNombre, txtApellido, txtCorreo, txtTelefono, txtDireccion;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_perfil);
 
@@ -117,11 +126,6 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
 
     private void cancelar() {
         finish();
-    }
-
-    private void verMisReportes() {
-        Intent i = new Intent(this, MisReportesActivity.class);
-        startActivity(i);
     }
 
     private void cerrarSesion() {

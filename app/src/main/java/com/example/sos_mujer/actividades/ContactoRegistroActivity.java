@@ -1,5 +1,6 @@
 package com.example.sos_mujer.actividades;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,10 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.example.sos_mujer.utils.LanguageHelper;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class ContactoRegistroActivity extends AppCompatActivity {
 
@@ -20,9 +25,16 @@ public class ContactoRegistroActivity extends AppCompatActivity {
     Button btnRegistrar, btnCancelar;
     private final static String URL_REGISTRAR = "http://sos-mujer.atwebpages.com/ws/agregarContacto.php";
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
         setContentView(R.layout.activity_contacto_registro);
 
         txtNombre = findViewById(R.id.NombreContacto);
@@ -43,6 +55,11 @@ public class ContactoRegistroActivity extends AppCompatActivity {
             return;
         }
 
+        if (numero.length() != 9) {
+            Toast.makeText(this, "El número debe tener exactamente 9 dígitos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         SosMujerSqlite db = new SosMujerSqlite(this);
         int usuarioId = db.getUsuarioId();
 
@@ -52,15 +69,17 @@ public class ContactoRegistroActivity extends AppCompatActivity {
         params.put("numero", numero);
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(URL_REGISTRAR, params, new com.loopj.android.http.JsonHttpResponseHandler() {
+        client.post(URL_REGISTRAR, params, new JsonHttpResponseHandler() {
+
             @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    if (response.getInt("status") == 1) {
-                        Toast.makeText(getApplicationContext(), "Contacto registrado", Toast.LENGTH_SHORT).show();
+                    int status = response.getInt("status");
+                    String mensaje = response.getString("mensaje");
+                    Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+
+                    if (status == 1) {
                         finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), response.getString("mensaje"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Error al procesar respuesta", Toast.LENGTH_SHORT).show();
@@ -68,7 +87,7 @@ public class ContactoRegistroActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Toast.makeText(getApplicationContext(), "Error de red", Toast.LENGTH_SHORT).show();
             }
         });

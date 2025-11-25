@@ -73,7 +73,7 @@
                     android:layout_marginVertical="15dp"
                     android:hint="@string/hintNumContacto"
                     android:inputType="phone"
-                    android:maxLength="15"
+                    android:maxLength="9"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -2,6 +2,7 @@ package com.example.sos_mujer.actividades;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.clases.Hash;
+import com.example.sos_mujer.utils.LanguageHelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -39,9 +41,16 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
     Button btnRegistrar, btnCancelar;
     CheckBox chkTerminos;
     TextView lblPregInicio;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registro);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -112,20 +121,45 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
             return;
         AlertDialog.Builder terminos = new AlertDialog.Builder(this);
         terminos.setTitle("Terminos y condiciones");
-        terminos.setMessage("1. Aceptación de los términos: El uso de la aplicación Lima Segura implica la aceptación plena y sin reservas de los presentes Términos y Condiciones. Si no estás de acuerdo con ellos, por favor no utilices la aplicación.\n" +
-                "2. Descripción del servicio: Lima Segura es una aplicación móvil que proporciona información sobre seguridad ciudadana, alertas, recomendaciones y herramientas de reporte para residentes y visitantes de Lima, Perú. El objetivo es fomentar la prevención y la respuesta ante situaciones de emergencia.\n" +
-                "3. Registro de usuarios: En algunos casos, el uso completo de la app puede requerir el registro de una cuenta personal. El usuario se compromete a proporcionar información veraz, actualizada y completa durante el proceso de registro. \n" +
-                "4. Uso adecuado de la aplicación: El usuario se compromete a: \n" +
-                "- No utilizar la app con fines ilícitos, fraudulentos o maliciosos.\n"+
-                "- No utilizar la app con fines ilícitos, fraudulentos o maliciosos.\n" +
-                "- No utilizar la app con fines ilícitos, fraudulentos o maliciosos.\n" +
-                "5. Notificaciones y geolocalización: La app puede enviar notificaciones en tiempo real y utilizar datos de geolocalización para brindar información relevante sobre tu ubicación. Al aceptar estos términos, autorizas el uso de esta funcionalidad. Puedes desactivarla en cualquier momento desde la configuración de tu dispositivo." +
-                "6. Responsabilidad: Lima Segura no se hace responsable por: \n" +
-                "- No utilizar la app con fines ilícitos, fraudulentos o maliciosos.\n"+
-                "- No utilizar la app con fines ilícitos, fraudulentos o maliciosos.\n" +
-                "- No utilizar la app con fines ilícitos, fraudulentos o maliciosos.\n" +
-                "7. Propiedad intelectual: Todos los contenidos, logos, diseños y funcionalidades de la app son propiedad de Lima Segura o de sus respectivos licenciantes, y están protegidos por las leyes de propiedad intelectual. Su reproducción sin autorización está prohibida." +
-                "8. Política de privacidad: El uso de esta app implica la aceptación de nuestra [Política de Privacidad], donde se detalla cómo recopilamos, utilizamos y protegemos tu información personal.");
+        terminos.setMessage("1. Aceptación de los Términos:\n" +
+                "Al descargar o usar la aplicación SOS Mujer, aceptas estos Términos y Condiciones. Si no estás de acuerdo, no debes utilizar la aplicación.\n\n" +
+
+                "2. Descripción del Servicio:\n" +
+                "SOS Mujer permite enviar alertas de emergencia con ubicación en tiempo real a contactos de confianza. También ofrece:\n" +
+                "- Botón de pánico\n" +
+                "- Registro de contactos de emergencia\n" +
+                "- Mapa interactivo con reportes\n" +
+                "- Registro de incidentes\n\n" +
+
+                "3. Permisos de la Aplicación:\n" +
+                "La app solicita acceso a:\n" +
+                "- Ubicación precisa (GPS)\n" +
+                "- Cámara\n" +
+                "- Almacenamiento\n" +
+                "- Envío de mensajes SMS\n" +
+                "Estos permisos son necesarios para brindar un servicio eficaz de ayuda.\n\n" +
+
+                "4. Privacidad y Seguridad:\n" +
+                "Tu información se guarda localmente o en servidores seguros. No compartimos tus datos sin tu autorización, excepto en emergencias definidas por ley.\n\n" +
+
+                "5. Responsabilidad del Usuario:\n" +
+                "- Usar la app solo con fines personales y legítimos.\n" +
+                "- No generar alertas falsas.\n" +
+                "- Mantener actualizados tus contactos de emergencia.\n" +
+                "El mal uso puede causar suspensión del acceso a la app.\n\n" +
+
+                "6. Limitación de Responsabilidad:\n" +
+                "SOS Mujer no garantiza que todas las alertas lleguen en todos los casos. La app complementa, pero no reemplaza, a los servicios oficiales de emergencia.\n\n" +
+
+                "7. Modificaciones:\n" +
+                "Los términos pueden cambiar. Notificaremos a través de la app o la tienda.\n\n" +
+
+                "8. Derechos sobre el contenido:\n" +
+                "Todo contenido generado en la app podrá ser utilizado por SOS Mujer con fines legales, estadísticos o de mejora del servicio.\n\n" +
+
+                "9. Eliminación de cuenta y datos:\n" +
+                "Si se elimina una cuenta o se suspende, los datos asociados serán conservados de forma segura para fines legales o estadísticos.");
+
         chkTerminos.setChecked(false);
         terminos.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.example.sos_mujer.actividades;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,13 +15,21 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.clases.Menu;
+import com.example.sos_mujer.utils.LanguageHelper;
 
 public class BienvenidaActivity extends AppCompatActivity implements View.OnClickListener, Menu {
 
     TextView lblSaludo, lblContacto, lblReportar, lblPanico, lblPerfil;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_bienvenida);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">SOS-Warmi</string>
+
+    <!-- Labels -->
+    <string name="lblCarga">Ruwanakuna qhawaykuchkasu...</string>
+    <string name="lblRegistro">Qillqay</string>
+    <string name="lblPregRegistro">Mana qillqasqa kachkanki? Qillqakuy!</string>
+    <string name="lblPregInicio">Qillqasqa kachkanki? Yaykuy!</string>
+    <string name="lblRecordar">Kuyakuy sesionta</string>
+    <string name="lblBienvenida">Allillanchu {nombre}</string>
+    <string name="lblHola">Allillanchu</string>
+    <string name="lblConfiguracion">Amachiykuna</string>
+    <string name="lblNotificaciones">Willaykunata chaskiy</string>
+    <string name="lblSonido">Uywakuy</string>
+    <string name="lblAplicar">Ruwariy</string>
+    <string name="lblRestaurar">Kutichiy</string>
+    <string name="lblContEmergencia">Yanapaynin wasi</string>
+    <string name="lblReportar">Manchakuy willay</string>
+    <string name="lblPanico">Manchakuy nitina</string>
+    <string name="lblPerfil">Rikchay</string>
+    <string name="lblSosMujer">SOS Warmi</string>
+    <string name="lblIdioma">Simi akllay:</string>
+    <string name="lblAbuso">Imapa nakakuyta akllay:</string>
+    <string name="lblMultimedia">Multimedia</string>
+    <string name="lblEnvioAlertas">Willay apachinapa pacha</string>
+    <string name="lblActivarBoton">Manchakuy nitita qapariykuna (3 kuti)</string>
+    <string name="lblFuncionalidades">Ruwanakuna</string>
+    <string name="lblApariencia">Rikchay y llamkay</string>
+    <string name="lblModoOscuro">Tuta kaymanta</string>
+    <string name="lblTamañoTexto">Qillqap sayaynin</string>
+    <string name="lblExtras">Aswan</string>
+    <string name="lblAcercaApp">Kay appmanta</string>
+    <string name="lblProbarAlerta">Yanapaynin willayta yachachiy</string>
+    <string name="lblComunidad">Ayllu</string>
+    <string name="lblNombreContacto">Suti</string>
+    <string name="lblCancelar">Chinkachiy</string>
+    <string name="lblTituloContacto">Yanapaynin wasi yapay</string>
+    <string name="lblRegistrar">Qillqay</string>
+    <string name="lblSOS">SOS</string>
+    <string name="lblCompartirUbicacion">Kawsaypi kachkanki apachiy</string>
+    <string name="lblUbicacionCompartida">Kawsaypi kachkanki willaykusqa...</string>
+    <string name="lblMiPerfil">Nuqapa rikchay</string>
+    <string name="frgRepLblTipo">Imapa: </string>
+    <string name="frgRepLblFecha">Punchaw: </string>
+    <string name="frgRepLblLugar">Maypi: </string>
+    <string name="frgRepLblDescripcion">Nirqay: </string>
+    <string name="lblEnciarMensaje">Yanapaynin willay apachiy</string>
+    <string name="lblPresionaBoton">Manchakuy nitita nityiy, kawsayki willayta yanapaynin runakunaman apachiy.</string>
+    <string name="lblNecesitasAyuda">Manchakuy! Yanapaynin munanki</string>
+    <string name="lblContactosEmergencia">Yanapaynin runakuna</string>
+    <string name="lblContadorContactos">0/3 runakuna</string>
+    <string name="btnEditar">Allinchay</string>
+    <string name="btnEliminar">Chinkachiy</string>
+    <string name="lblEditarContacto">Yanapaynin wasi allinchay</string>
+    <string name="btnGuardarCambios">Harkay</string>
+    <string name="lblPreviewTexto">Qillqap qhawariy</string>
+
+    <!-- Buttons -->
+    <string name="btnIniciar">Yaykuy</string>
+    <string name="btnRegistrarse">Qillqakuy</string>
+    <string name="btnRegistrar">Qillqay</string>
+    <string name="btnCancelar">Chinkachiy</string>
+    <string name="btnMisReportes">Nuqapa willaykuna</string>
+    <string name="btnReportar">Willay</string>
+    <string name="btnCerrarSesion">Sesionnita wisqay</string>
+    <string name="btnActualizar">Kutimuy</string>
+    <string name="btnAgregar">Yapay</string>
+    <string name="btnDetenerBusqueda">Maskayta sayachiy</string>
+    <string name="btnMiUbicacionActual">Kunan kawsaypi</string>
+
+    <!-- Hints -->
+    <string name="hintNombre">Suti</string>
+    <string name="hintApellidos">Ayllu suti</string>
+    <string name="hintDni">ID</string>
+    <string name="hintDireccion">Maypi tiyakuy</string>
+    <string name="hintNumero">Yupay</string>
+    <string name="hintTerminos">Kamachiykuna</string>
+    <string name="hintFechaNacimiento">Paqariy punchaw</string>
+    <string name="hintCorreo">Correo</string>
+    <string name="hintContraseña">Paskay</string>
+    <string name="hintConfirmarContraseña">Paskay kachariy</string>
+    <string name="hintDescripcion">Nirqay</string>
+    <string name="hintNumContacto">Yupay</string>
+    <string name="hintNombreContacto">Suti</string>
+
+    <!-- Arrays -->
+    <string-array name="cboIdioma">
+        <item>Espanol</item>
+        <item>Runasimi</item>
+        <item>Ingles</item>
+    </string-array>
+
+    <string-array name="cboAbuso">
+        <item>Suwa kay</item>
+        <item>Chaqway</item>
+        <item>Sexual nakariy</item>
+        <item>Qatiykuy</item>
+    </string-array>
+
+    <string-array name="cboIntervalo">
+        <item>30 chikipi</item>
+        <item>1 minuto</item>
+        <item>5 minuto</item>
+        <item>Huk kuti</item>
+    </string-array>
+
+    <string-array name="filtros_reportes">
+        <item>Tukuy willaykuna</item>
+        <item>Hichanapi willaykuna</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Allillanchu fragmento</string>
+</resources>
