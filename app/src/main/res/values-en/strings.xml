@@ -1,0 +1,114 @@
+<resources>
+    <!-- App -->
+    <string name="app_name">SOS-Woman</string>
+
+    <!-- Labels -->
+    <string name="lblCarga">Loading application...</string>
+    <string name="lblRegistro">Register</string>
+    <string name="lblPregRegistro">Don\'t have an account? Register!</string>
+    <string name="lblPregInicio">Already have an account? Sign in!</string>
+    <string name="lblRecordar">Remember session</string>
+    <string name="lblBienvenida">Welcome {nombre}</string>
+    <string name="lblHola">Hello</string>
+    <string name="lblConfiguracion">Settings</string>
+    <string name="lblNotificaciones">Receive notifications</string>
+    <string name="lblSonido">Sound</string>
+    <string name="lblAplicar">Apply</string>
+    <string name="lblRestaurar">Reset</string>
+    <string name="lblContEmergencia">Emergency contact</string>
+    <string name="lblReportar">Report abuse</string>
+    <string name="lblPanico">Panic button</string>
+    <string name="lblPerfil">Profile</string>
+    <string name="lblSosMujer">SOS Woman</string>
+    <string name="lblIdioma">Choose language:</string>
+    <string name="lblAbuso">Select abuse type:</string>
+    <string name="lblMultimedia">Multimedia</string>
+    <string name="lblEnvioAlertas">Alert sending interval</string>
+    <string name="lblActivarBoton">Activate panic button using volume key (x3)</string>
+    <string name="lblFuncionalidades">Features</string>
+    <string name="lblApariencia">Appearance and usability</string>
+    <string name="lblModoOscuro">Dark mode</string>
+    <string name="lblTamañoTexto">Text size</string>
+    <string name="lblExtras">Extras</string>
+    <string name="lblAcercaApp">About the app</string>
+    <string name="lblProbarAlerta">Test emergency alert</string>
+    <string name="lblComunidad">Community</string>
+    <string name="lblNombreContacto">Name</string>
+    <string name="lblCancelar">Cancel</string>
+    <string name="lblTituloContacto">Add emergency contact</string>
+    <string name="lblRegistrar">Register</string>
+    <string name="lblSOS">SOS</string>
+    <string name="lblCompartirUbicacion">Share location</string>
+    <string name="lblUbicacionCompartida">Your location is being shared...</string>
+    <string name="lblMiPerfil">My profile</string>
+    <string name="frgRepLblTipo">Type: </string>
+    <string name="frgRepLblFecha">Date: </string>
+    <string name="frgRepLblLugar">Place: </string>
+    <string name="frgRepLblDescripcion">Description: </string>
+    <string name="lblEnciarMensaje">Send emergency message</string>
+    <string name="lblPresionaBoton">Press the panic button to send your location and message to your emergency contacts.</string>
+    <string name="lblNecesitasAyuda">Panic! You need urgent help</string>
+    <string name="lblContactosEmergencia">Emergency contacts</string>
+    <string name="lblContadorContactos">0/3 contacts</string>
+    <string name="btnEditar">Edit</string>
+    <string name="btnEliminar">Delete</string>
+    <string name="lblEditarContacto">Edit contact</string>
+    <string name="btnGuardarCambios">Save changes</string>
+    <string name="lblPreviewTexto">Sample text</string>
+
+    <!-- Buttons -->
+    <string name="btnIniciar">Sign in</string>
+    <string name="btnRegistrarse">Sign up</string>
+    <string name="btnRegistrar">Register</string>
+    <string name="btnCancelar">Cancel</string>
+    <string name="btnMisReportes">My reports</string>
+    <string name="btnReportar">Report</string>
+    <string name="btnCerrarSesion">Log out</string>
+    <string name="btnActualizar">Update</string>
+    <string name="btnAgregar">Add</string>
+    <string name="btnDetenerBusqueda">Stop search</string>
+    <string name="btnMiUbicacionActual">My current location</string>
+
+    <!-- Hints -->
+    <string name="hintNombre">Name(s)</string>
+    <string name="hintApellidos">Last name(s)</string>
+    <string name="hintDni">ID</string>
+    <string name="hintDireccion">Address</string>
+    <string name="hintNumero">Phone number</string>
+    <string name="hintTerminos">Terms and conditions</string>
+    <string name="hintFechaNacimiento">Birthdate</string>
+    <string name="hintCorreo">Email</string>
+    <string name="hintContraseña">Password</string>
+    <string name="hintConfirmarContraseña">Confirm password</string>
+    <string name="hintDescripcion">Description</string>
+    <string name="hintNumContacto">Phone number</string>
+    <string name="hintNombreContacto">Name(s)</string>
+
+    <!-- Arrays -->
+    <string-array name="cboIdioma">
+        <item>Spanish</item>
+        <item>Quechua</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="cboAbuso">
+        <item>Theft</item>
+        <item>Physical violence</item>
+        <item>Sexual violence</item>
+        <item>Harassment</item>
+    </string-array>
+
+    <string-array name="cboIntervalo">
+        <item>Every 30 seconds</item>
+        <item>Every 1 minute</item>
+        <item>Every 5 minutes</item>
+        <item>Only once</item>
+    </string-array>
+
+    <string-array name="filtros_reportes">
+        <item>View all reports</item>
+        <item>View nearby reports</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

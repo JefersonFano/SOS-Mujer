@@ -1,66 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="10dp"
     app:cardUseCompatPadding="true"
     app:cardElevation="5dp"
-    app:cardCornerRadius="12dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:cardCornerRadius="12dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/itmCarReporte"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="false">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
+            android:padding="10dp">
+
             <ImageView
                 android:id="@+id/itmImgFoto"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:scaleType="centerCrop"
+                android:background="@color/gris2"
+                android:layout_marginEnd="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/itmLblTipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:text="@string/frgRepLblTipo"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/itmLblFecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:text="@string/frgRepLblFecha"/>
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/itmLblLugar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:text="@string/frgRepLblLugar"/>
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/itmLblDistancia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/morado"
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:id="@+id/itmLblDescripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:text="@string/frgRepLblDescripcion"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </androidx.cardview.widget.CardView>

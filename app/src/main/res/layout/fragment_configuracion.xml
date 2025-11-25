@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragmentos.ConfiguracionFragment">
 
     <LinearLayout
@@ -11,200 +11,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <!-- Título -->
+        <TextView
+            android:id="@+id/confLblTitulo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/regLblRegistro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/morado"
-                android:gravity="center"
-                android:padding="20dp"
-                android:text="@string/lblSosMujer"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/morado"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/lblConfiguracion"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
+        <!-- Card: Idioma y notificaciones -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="15dp"
-            app:cardUseCompatPadding="true"
-            app:cardElevation="5dp"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginBottom="15dp"
-                    android:text="@string/lblConfiguracion"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblIdioma" />
-
-                <Spinner
-                    android:id="@+id/confCboIdioma"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:entries="@array/cboIdioma" />
-
-                <CheckBox
-                    android:id="@+id/frgCfgChkNotificaciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblNotificaciones" />
-
-                <TextView
-                    android:id="@+id/frgCfgLblSonido"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblSonido" />
-
-                <SeekBar
-                    android:id="@+id/frgCfgBarSonido"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="50" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Sección: Funcionalidades -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="15dp"
-            app:cardUseCompatPadding="true"
-            app:cardElevation="5dp"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblFuncionalidades"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="10dp" />
-
-                <CheckBox
-                    android:id="@+id/frgCfgChkPanicoVolumen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblActivarBoton"/>
-
-                <TextView
-                    android:id="@+id/frgCfgLblTamañoTexto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblEnvioAlertas"
-                    android:layout_marginTop="10dp" />
-
-                <Spinner
-                    android:id="@+id/confCboIntervalo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/cboIntervalo"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Sección: Apariencia y Usabilidad -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="15dp"
-            app:cardUseCompatPadding="true"
-            app:cardElevation="5dp"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblApariencia"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="10dp" />
-
-                <Switch
-                    android:id="@+id/frgCfgSwitchTema"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblModoOscuro"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lblTamañoTexto"
-                    android:layout_marginTop="10dp" />
-
-                <SeekBar
-                    android:id="@+id/frgCfgBarTamañoTexto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="30"
-                    android:progress="16"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <Button
-                        android:id="@+id/frgCfgBtnAplicar"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lblAplicar"
-                        android:textAllCaps="false"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="@color/morado"/>
-
-                    <Button
-                        android:id="@+id/frgCfgBtnRestaurar"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lblRestaurar"
-                        android:textAllCaps="false"
-                        android:layout_marginStart="8dp"
-                        android:backgroundTint="@color/morado"/>
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Sección: Extras -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             app:cardCornerRadius="15dp"
             app:cardUseCompatPadding="true"
             app:cardElevation="5dp">
@@ -218,26 +42,128 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lblExtras"
+                    android:text="@string/lblIdioma"
                     android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="10dp"/>
+                    android:textSize="16sp"/>
 
-                <Button
-                    android:id="@+id/frgCfgBtnAcerca"
+                <Spinner
+                    android:id="@+id/confCboIdioma"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lblAcercaApp"
-                    android:textAllCaps="false" />
+                    android:layout_marginBottom="12dp"
+                    android:entries="@array/cboIdioma" />
 
-                <Button
-                    android:id="@+id/frgCfgBtnPruebaAlerta"
+                <CheckBox
+                    android:id="@+id/frgCfgChkNotificaciones"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/lblProbarAlerta"
-                    android:textAllCaps="false" />
+                    android:text="@string/lblNotificaciones" />
+
+                <TextView
+                    android:id="@+id/frgCfgLblSonido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblSonido"
+                    android:layout_marginTop="12dp" />
+
+                <SeekBar
+                    android:id="@+id/frgCfgBarSonido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="70" />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <!-- Card: Apariencia -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="15dp"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblApariencia"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <Switch
+                    android:id="@+id/frgCfgSwitchTema"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblModoOscuro" />
+
+                <TextView
+                    android:id="@+id/frgCfgLblTamañoTexto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblTamañoTexto"
+                    android:layout_marginTop="12dp" />
+
+                <SeekBar
+                    android:id="@+id/frgCfgBarTamañoTexto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="3"
+                    android:progress="1" />
+
+                <!-- Vista previa del tamaño de texto -->
+                <TextView
+                    android:id="@+id/frgCfgLblPreviewTexto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblPreviewTexto"
+                    android:layout_marginTop="8dp"
+                    android:textSize="16sp" />
+
+                <!-- Botones Aplicar / Restaurar -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp">
+
+                    <Button
+                        android:id="@+id/frgCfgBtnAplicar"
+                        android:layout_width="0dp"
+                        android:layout_weight="  1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lblAplicar"
+                        android:textAllCaps="false"
+                        android:backgroundTint="@color/morado"
+                        android:textColor="@color/white"
+                        android:layout_marginEnd="8dp"/>
+
+                    <Button
+                        android:id="@+id/frgCfgBtnRestaurar"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lblRestaurar"
+                        android:textAllCaps="false"
+                        android:backgroundTint="@color/morado"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="8dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -1,9 +1,16 @@
 package com.example.sos_mujer.actividades;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,178 +20,254 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.sos_mujer.R;
+import com.example.sos_mujer.servicios.LocationUpdatesService;
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.example.sos_mujer.utils.LanguageHelper;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import android.location.Address;
-import android.location.Geocoder;
-
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import cz.msebera.android.httpclient.Header;
+
 public class PanicoActivity extends AppCompatActivity {
 
-    private static final String URL_CONTACTOS = "http://sos-mujer.atwebpages.com/ws/mostrarContacto.php?usuario_id=";
-    Button btnPanico;
-    FusedLocationProviderClient fusedLocationClient;
-    double latitud = 0.0;
-    double longitud = 0.0;
+    private static final String URL_CONTACTOS =
+            "http://sos-mujer.atwebpages.com/ws/mostrarContacto.php?usuario_id=";
 
-    // Variables para detectar la triple pulsación
+    private static final String BASE_URL_LIVE_LOCATION =
+            "http://sos-mujer.atwebpages.com/ws/live_location.php?usuario_id=";
+
+    private static final String URL_DETENER =
+            "http://sos-mujer.atwebpages.com/ws/detener_emergencia.php?usuario_id=";
+
+    private Button btnPanico, btnDetener;
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private int usuarioId;
+
     private static final int MAX_PRESIONES = 3;
     private int contadorPresiones = 0;
     private long tiempoUltimaPresion = 0;
-    private static final long TIEMPO_MAXIMO = 1000; // 1 segundo
+    private static final long TIEMPO_MAXIMO = 1000;
+
+    private static final int REQ_LOC = 100;
+    private static final int REQ_SMS = 101;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
         setContentView(R.layout.activity_panico);
 
         btnPanico = findViewById(R.id.btnPanico);
+        btnDetener = findViewById(R.id.btnDetener);
 
-        // Verifica permisos de ubicación y SMS
+        solicitarAppSmsPredeterminada();
         verificarPermisos();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // Al presionar el botón de pánico, se obtiene la ubicación y se envían los mensajes
-        btnPanico.setOnClickListener(v -> obtenerUbicacionYEnviarMensajes());
+        SosMujerSqlite db = new SosMujerSqlite(this);
+        usuarioId = db.getUsuarioId();
+
+        btnPanico.setOnClickListener(v -> dispararEmergencia());
+
+        btnDetener.setOnClickListener(v -> mostrarDialogoDetener());
+    }
+
+    private void solicitarAppSmsPredeterminada() {
+        if (!Telephony.Sms.getDefaultSmsPackage(this).equals(getPackageName())) {
+            Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, getPackageName());
+            startActivity(intent);
+        }
     }
 
     private void verificarPermisos() {
-        // Verifica si se tiene permiso para acceder a la ubicación
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQ_LOC);
         }
 
-        // Verifica si se tiene permiso para enviar SMS
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 101);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    REQ_SMS);
         }
     }
 
-    // Método para obtener la ubicación y luego enviar el mensaje
-    private void obtenerUbicacionYEnviarMensajes() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+    private void dispararEmergencia() {
+        obtenerUbicacionYEnviarMensajes(true);
+    }
+
+    private void mostrarDialogoDetener() {
+        new AlertDialog.Builder(this)
+                .setTitle("Detener emergencia")
+                .setMessage("¿Deseas detener la emergencia y dejar de compartir tu ubicación?")
+                .setPositiveButton("Sí, detener", (dialog, which) -> detenerEmergencia())
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void detenerEmergencia() {
+        detenerServicioUbicacionEnVivo();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(URL_DETENER + usuarioId, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Toast.makeText(PanicoActivity.this,
+                        "Emergencia finalizada", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void detenerServicioUbicacionEnVivo() {
+        Intent i = new Intent(this, LocationUpdatesService.class);
+        stopService(i);
+        Toast.makeText(this, "Ubicación en vivo detenida", Toast.LENGTH_SHORT).show();
+    }
+
+    private void obtenerUbicacionYEnviarMensajes(boolean iniciarServicio) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
             return;
         }
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
-                latitud = location.getLatitude();
-                longitud = location.getLongitude();
-
-                // Obtener la dirección de la ubicación
-                obtenerDireccionYEnviarSMS(latitud, longitud);
-            } else {
-                Toast.makeText(getApplicationContext(), "No se pudo obtener ubicación", Toast.LENGTH_SHORT).show();
+            if (location == null) {
+                Toast.makeText(this,
+                        "No se pudo obtener ubicación", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            double lat = location.getLatitude();
+            double lon = location.getLongitude();
+
+            String direccion = obtenerDireccion(lat, lon);
+            String trackingUrl = BASE_URL_LIVE_LOCATION + usuarioId;
+
+            enviarMensajes(direccion, trackingUrl);
+
+            if (iniciarServicio) iniciarServicioUbicacionEnVivo();
         });
     }
 
-    // Método para obtener la dirección a partir de las coordenadas y enviar los mensajes
-    private void obtenerDireccionYEnviarSMS(double latitud, double longitud) {
+    private String obtenerDireccion(double lat, double lon) {
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(latitud, longitud, 1);
+            List<Address> list = geocoder.getFromLocation(lat, lon, 1);
 
-            String direccion = "";
-            if (!addresses.isEmpty()) {
-                direccion = addresses.get(0).getAddressLine(0);
-            } else {
-                direccion = "Lat: " + latitud + ", Lng: " + longitud;
+            if (list != null && !list.isEmpty()) {
+                return list.get(0).getAddressLine(0);
             }
 
-            enviarMensajes(direccion);
-        } catch (IOException e) {
-            e.printStackTrace();
-            enviarMensajes("Lat: " + latitud + ", Lng: " + longitud);
-        }
+        } catch (Exception ignored) {}
+
+        return "Lat: " + lat + ", Lon: " + lon;
     }
 
-    // Método para enviar los mensajes con la ubicación y el mensaje de emergencia
-    private void enviarMensajes(String direccion) {
-        SosMujerSqlite db = new SosMujerSqlite(this);
-        int usuarioId = db.getUsuarioId();
+    private void enviarMensajes(String direccion, String trackingUrl) {
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(URL_CONTACTOS + usuarioId, new JsonHttpResponseHandler() {
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                try {
-                    if (response.length() == 0) {
-                        Toast.makeText(getApplicationContext(), "No hay contactos registrados", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            public void onSuccess(int statusCode, Header[] headers, JSONArray contacts) {
 
-                    // Preparar el mensaje de emergencia
-                    String mensaje = "⚠️ ¡Emergencia! Necesito ayuda. " +
-                            "Por favor comunícate conmigo lo antes posible. " +
-                            "Ubicación: " + direccion + " - SOS Mujer";
+                if (contacts.length() == 0) {
+                    Toast.makeText(PanicoActivity.this,
+                            "No hay contactos registrados", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                    // Enviar SMS a todos los contactos registrados
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject contacto = response.getJSONObject(i);
-                        String numero = contacto.getString("numero");
+                String mensaje =
+                        "¡EMERGENCIA! Necesito ayuda urgente.\n" +
+                                "Ubicación: " + direccion + "\n" +
+                                "Ubicación en vivo: " + trackingUrl + "\n" +
+                                "SOS Mujer";
 
-                        // Agregar el código de país si no está
+                for (int i = 0; i < contacts.length(); i++) {
+                    try {
+                        JSONObject c = contacts.getJSONObject(i);
+                        String numero = c.getString("numero");
+
                         if (numero.length() == 9 && !numero.startsWith("+51")) {
                             numero = "+51" + numero;
                         }
 
-                        try {
-                            SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(numero, null, mensaje, null, null);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Error al enviar SMS a " + numero, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Error al preparar mensajes", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            }
+                        enviarSMS(numero, mensaje);
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Toast.makeText(getApplicationContext(), "Error al cargar contactos", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Log.e("SMS", "Error mensaje a contacto", e);
+                    }
+                }
+
+                Toast.makeText(PanicoActivity.this,
+                        "Mensajes enviados", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // Método para capturar la triple pulsación de "Volumen Abajo"
+    private void enviarSMS(String numero, String mensaje) {
+        try {
+            SmsManager sms = SmsManager.getDefault();
+            ArrayList<String> partes = sms.divideMessage(mensaje);
+            sms.sendMultipartTextMessage(numero, null, partes, null, null);
+            Log.d("SMS", "SMS enviado -> " + numero);
+
+        } catch (Exception e) {
+            Log.e("SMS", "ERROR SMS", e);
+        }
+    }
+
+    private void iniciarServicioUbicacionEnVivo() {
+        Intent i = new Intent(this, LocationUpdatesService.class);
+        i.putExtra("usuario_id", usuarioId);
+        ContextCompat.startForegroundService(this, i);
+    }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            long tiempoActual = System.currentTimeMillis();
-            if (tiempoActual - tiempoUltimaPresion < TIEMPO_MAXIMO) {
-                contadorPresiones++; // Incrementar el contador de presiones
-            } else {
-                // Reiniciar el contador si el tiempo entre presiones es mayor al intervalo
-                contadorPresiones = 1;
-            }
+    public boolean onKeyDown(int key, KeyEvent e) {
+        if (key == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            long t = System.currentTimeMillis();
 
-            // Actualizar la última vez que se presionó la tecla
-            tiempoUltimaPresion = tiempoActual;
+            if (t - tiempoUltimaPresion < TIEMPO_MAXIMO) contadorPresiones++;
+            else contadorPresiones = 1;
 
-            // Si se han presionado 3 veces, ejecutar la acción de pánico
+            tiempoUltimaPresion = t;
+
             if (contadorPresiones >= MAX_PRESIONES) {
-                obtenerUbicacionYEnviarMensajes();
-                contadorPresiones = 0;  // Reiniciar el contador después de la acción
-                return true; // Evitar que se propague el evento
+                dispararEmergencia();
+                contadorPresiones = 0;
+                return true;
             }
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(key, e);
     }
 }

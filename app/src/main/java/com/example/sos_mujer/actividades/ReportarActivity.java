@@ -1,6 +1,7 @@
 package com.example.sos_mujer.actividades;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.example.sos_mujer.utils.LanguageHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.loopj.android.http.AsyncHttpClient;
@@ -65,8 +67,14 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
     FusedLocationProviderClient fusedLocationClient;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reportar);
 
@@ -232,6 +240,6 @@ public class ReportarActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void cancelar() {
-        finishAffinity();
+        finish();
     }
 }

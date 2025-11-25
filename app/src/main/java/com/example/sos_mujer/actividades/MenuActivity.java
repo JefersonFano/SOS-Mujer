@@ -1,5 +1,6 @@
 package com.example.sos_mujer.actividades;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -17,14 +18,21 @@ import com.example.sos_mujer.fragmentos.ComunidadFragment;
 import com.example.sos_mujer.fragmentos.ConfiguracionFragment;
 import com.example.sos_mujer.fragmentos.MapaFragment;
 import com.example.sos_mujer.fragmentos.MenuFragment;
+import com.example.sos_mujer.utils.LanguageHelper;
 
 public class MenuActivity extends AppCompatActivity implements Menu {
 
     Fragment[] fragments;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_menu);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

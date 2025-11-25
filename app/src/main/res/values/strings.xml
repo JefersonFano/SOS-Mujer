@@ -47,6 +47,13 @@
     <string name="lblEnciarMensaje">Enviar Mensaje de Emergencia</string>
     <string name="lblPresionaBoton">Presiona el botón de pánico para enviar tu ubicación y mensaje de emergencia a tus contactos registrados.</string>
     <string name="lblNecesitasAyuda">¡Pánico! Necesitas ayuda urgente</string>
+    <string name="lblContactosEmergencia">Contactos de emergencia</string>
+    <string name="lblContadorContactos">0/3 contactos</string>
+    <string name="btnEditar">Editar</string>
+    <string name="btnEliminar">Eliminar</string>
+    <string name="lblEditarContacto">Editar contacto</string>
+    <string name="btnGuardarCambios">Guardar cambios</string>
+    <string name="lblPreviewTexto">Texto de ejemplo</string>
 
     <!--Buttons-->
     <string name="btnIniciar">Iniciar Sesión</string>
@@ -80,7 +87,6 @@
     <string-array name="cboIdioma">
         <item>Español</item>
         <item>Quechua</item>
-        <item>Aymara</item>
         <item>Inglés</item>
     </string-array>
 
@@ -96,6 +102,12 @@
         <item>Cada 1 minuto</item>
         <item>Cada 5 minutos</item>
         <item>Solo una vez</item>
+    </string-array>
+
+    <!--Filtro-->
+    <string-array name="filtros_reportes">
+        <item>Ver todos los reportes</item>
+        <item>Ver reportes cercanos</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

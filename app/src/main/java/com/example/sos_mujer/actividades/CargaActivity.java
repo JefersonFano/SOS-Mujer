@@ -1,5 +1,6 @@
 package com.example.sos_mujer.actividades;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +16,19 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.example.sos_mujer.utils.LanguageHelper;
 
 public class CargaActivity extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar barCarga;
     Button btnIniciar, btnRegistrar;
     TextView txtCargar;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
