@@ -13,6 +13,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.servicios.LocationUpdatesService;
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
+import com.example.sos_mujer.utils.EmergenciaManager;
 import com.example.sos_mujer.utils.LanguageHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,6 +33,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +65,8 @@ public class PanicoActivity extends AppCompatActivity {
     private static final int REQ_LOC = 100;
     private static final int REQ_SMS = 101;
 
+    private SosMujerSqlite db;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LanguageHelper.applyLanguage(newBase));
@@ -75,24 +81,36 @@ public class PanicoActivity extends AppCompatActivity {
         btnPanico = findViewById(R.id.btnPanico);
         btnDetener = findViewById(R.id.btnDetener);
 
+        db = new SosMujerSqlite(this);
+        usuarioId = db.getUsuarioId();
+
+        if (usuarioId == -1) {
+            Toast.makeText(this, "Error: no hay usuario registrado", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         solicitarAppSmsPredeterminada();
         verificarPermisos();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        SosMujerSqlite db = new SosMujerSqlite(this);
-        usuarioId = db.getUsuarioId();
-
         btnPanico.setOnClickListener(v -> dispararEmergencia());
-
-        btnDetener.setOnClickListener(v -> mostrarDialogoDetener());
+        btnDetener.setOnClickListener(v -> mostrarDialogoPassword());
     }
 
+    // ==========================
+    //   APP SMS POR DEFECTO
+    // ==========================
     private void solicitarAppSmsPredeterminada() {
-        if (!Telephony.Sms.getDefaultSmsPackage(this).equals(getPackageName())) {
-            Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, getPackageName());
-            startActivity(intent);
+        try {
+            String actual = Telephony.Sms.getDefaultSmsPackage(this);
+            if (actual == null || !actual.equals(getPackageName())) {
+                Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+                intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, getPackageName());
+                startActivity(intent);
+            }
+        } catch (Exception e) {
+            Log.e("SMS_DEFAULT", "No se pudo establecer como app SMS por defecto", e);
         }
     }
 
@@ -117,37 +135,18 @@ public class PanicoActivity extends AppCompatActivity {
         }
     }
 
+    // ==========================
+    //    INICIAR EMERGENCIA
+    // ==========================
     private void dispararEmergencia() {
+
+        if (EmergenciaManager.esEmergenciaActiva(this)) {
+            Toast.makeText(this, "Ya tienes una emergencia activa", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        EmergenciaManager.activarEmergencia(this);
         obtenerUbicacionYEnviarMensajes(true);
-    }
-
-    private void mostrarDialogoDetener() {
-        new AlertDialog.Builder(this)
-                .setTitle("Detener emergencia")
-                .setMessage("¿Deseas detener la emergencia y dejar de compartir tu ubicación?")
-                .setPositiveButton("Sí, detener", (dialog, which) -> detenerEmergencia())
-                .setNegativeButton("Cancelar", null)
-                .show();
-    }
-
-    private void detenerEmergencia() {
-        detenerServicioUbicacionEnVivo();
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(URL_DETENER + usuarioId, new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Toast.makeText(PanicoActivity.this,
-                        "Emergencia finalizada", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void detenerServicioUbicacionEnVivo() {
-        Intent i = new Intent(this, LocationUpdatesService.class);
-        stopService(i);
-        Toast.makeText(this, "Ubicación en vivo detenida", Toast.LENGTH_SHORT).show();
     }
 
     private void obtenerUbicacionYEnviarMensajes(boolean iniciarServicio) {
@@ -156,6 +155,7 @@ public class PanicoActivity extends AppCompatActivity {
                 ActivityCompat.checkSelfPermission(this,
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+            Toast.makeText(this, "Sin permiso de ubicación", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -252,6 +252,98 @@ public class PanicoActivity extends AppCompatActivity {
         ContextCompat.startForegroundService(this, i);
     }
 
+    // ==========================
+    //     DETENER EMERGENCIA
+    // ==========================
+    private void mostrarDialogoPassword() {
+
+        if (!EmergenciaManager.esEmergenciaActiva(this)) {
+            Toast.makeText(this, "No hay una emergencia activa", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        final EditText input = new EditText(this);
+        input.setHint("Contraseña");
+        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT |
+                android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Detener emergencia")
+                .setMessage("Ingresa tu contraseña para detener la emergencia")
+                .setView(input)
+                .setPositiveButton("Aceptar", (dialog, which) -> {
+                    String passIngresada = input.getText().toString().trim();
+                    if (passIngresada.isEmpty()) {
+                        Toast.makeText(this, "Contraseña vacía", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    String hashGuardado = db.getPassword(); // SHA-256 guardado
+                    String hashIngresada = sha256(passIngresada);
+
+                    if (!hashIngresada.equals(hashGuardado)) {
+                        Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Contraseña OK → detener emergencia
+                    detenerEmergencia();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void detenerEmergencia() {
+
+        // Detener servicio
+        Intent i = new Intent(this, LocationUpdatesService.class);
+        stopService(i);
+
+        // Notificar al servidor (set activo = 0)
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(URL_DETENER + usuarioId, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Toast.makeText(PanicoActivity.this,
+                        "Emergencia finalizada", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject e) {
+                Toast.makeText(PanicoActivity.this,
+                        "No se pudo notificar al servidor, inténtalo luego",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Limpiar estado local
+        EmergenciaManager.desactivarEmergencia(this);
+    }
+
+    // ==========================
+    //      SHA-256
+    // ==========================
+    private String sha256(String base) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(base.getBytes());
+            StringBuilder hexString = new StringBuilder();
+
+            for (byte b : hash) {
+                String h = Integer.toHexString(0xFF & b);
+                if (h.length() == 1) hexString.append('0');
+                hexString.append(h);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException ex) {
+            return "";
+        }
+    }
+
+    // =================================
+    // ATAJO: 3 VECES VOLUMEN ABAJO
+    // =================================
     @Override
     public boolean onKeyDown(int key, KeyEvent e) {
         if (key == KeyEvent.KEYCODE_VOLUME_DOWN) {

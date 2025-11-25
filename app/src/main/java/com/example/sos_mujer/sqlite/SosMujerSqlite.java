@@ -102,4 +102,13 @@ public class SosMujerSqlite extends SQLiteOpenHelper{
         return -1;
     }
 
+    // 🔐 NUEVO: obtener la contraseña (hash SHA-256) guardada
+    public String getPassword() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT contrasenia FROM Usuario LIMIT 1", null);
+        if (c != null && c.moveToFirst()) {
+            return c.getString(0);
+        }
+        return "";
+    }
 }
