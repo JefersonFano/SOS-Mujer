@@ -1,6 +1,8 @@
 package com.example.sos_mujer.actividades;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +28,6 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -37,11 +38,27 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
     CheckBox chkRecordar;
     Button btnIniciar, btnCancelar;
     TextView lblPregRegistro;
+
+    private static final String PREFS_NAME = "SosMujerPrefs";
+    private static final String KEY_MANTENER_SESION = "mantener_sesion";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Verificar si debemos mantener la sesión
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean mantenerSesion = prefs.getBoolean(KEY_MANTENER_SESION, false);
+
         SosMujerSqlite db = new SosMujerSqlite(this);
+
+        if (!mantenerSesion) {
+            // Si no se debe mantener la sesión, limpiamos la base de datos local al iniciar
+            // Solo si venimos de un reinicio de app, no si estamos navegando
+            // Pero como esta Activity es el launcher, está bien limpiar aquí si no hay sesión persistente.
+            db.eliminarUsuario(db.getUsuarioId());
+        }
+
         if (db.recordarSesion()) {
             String nombre = db.getString("nombre");
             String apellido = db.getString("apellido");
@@ -99,27 +116,36 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
                     if (status == 1) {
                         JSONObject usuario = response.getJSONObject("usuario");
 
-                        if (chkRecordar.isChecked()) {
-                            SosMujerSqlite db = new SosMujerSqlite(getApplicationContext());
+                        // Guardar en SharedPreferences si se desea mantener la sesión
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putBoolean(KEY_MANTENER_SESION, chkRecordar.isChecked());
+                        editor.apply();
 
-                            // Limpia sesiones anteriores antes de guardar
-                            db.eliminarUsuario(1);
+                        // SIEMPRE guardamos en SQLite para que la app funcione mientras esté abierta
+                        SosMujerSqlite db = new SosMujerSqlite(getApplicationContext());
 
-                            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            Date fechaNac = format.parse(usuario.getString("fechaNac"));
+                        // Limpia sesiones anteriores antes de guardar
+                        // Obtenemos ID existente si hay uno, o limpiamos todo por seguridad
+                        int idExistente = db.getUsuarioId();
+                        if (idExistente != -1) db.eliminarUsuario(idExistente);
+                        // O un borrado genérico si tuviéramos un método deleteAll (pero eliminarUsuario con ID funciona si solo hay 1)
 
-                            db.agregarUsuario(
-                                    usuario.getInt("id"),
-                                    usuario.getString("nombre"),
-                                    usuario.getString("apellido"),
-                                    usuario.getString("correo"),
-                                    usuario.getString("contrasenia"),
-                                    usuario.getString("dni"),
-                                    usuario.getString("telefono"),
-                                    usuario.getString("direccion"),
-                                    fechaNac
-                            );
-                        }
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        Date fechaNac = format.parse(usuario.getString("fechaNac"));
+
+                        db.agregarUsuario(
+                                usuario.getInt("id"),
+                                usuario.getString("nombre"),
+                                usuario.getString("apellido"),
+                                usuario.getString("correo"),
+                                usuario.getString("contrasenia"),
+                                usuario.getString("dni"),
+                                usuario.getString("telefono"),
+                                usuario.getString("direccion"),
+                                fechaNac
+                        );
+
 
                         Intent intent = new Intent(getApplicationContext(), BienvenidaActivity.class);
                         intent.putExtra("nombre", usuario.getString("nombre"));
@@ -141,25 +167,6 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(getApplicationContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
             }
         });
-
-        /*SosMujerSqlite sosMujerSqlite = new SosMujerSqlite(this);
-        Hash hash = new Hash();
-        contrasenia = hash.StringToHash(contrasenia, "SHA256").toLowerCase();
-
-        if(chkRecordar.isChecked()) {
-            try {
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                Date fechaNac = format.parse("1999-10-21");
-                sosMujerSqlite.agregarUsuario(1, "Daniela", "Gonzales", correo,
-                        contrasenia, "78654123", "987654321", "Av. Templo del sol 543", fechaNac);
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        Intent iBienvenida = new Intent(this, BienvenidaActivity.class);
-        iBienvenida.putExtra("usuario", "Rosa");
-        startActivity(iBienvenida);
-        finish();*/
     }
 
     private void registrar() {
