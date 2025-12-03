@@ -13,38 +13,124 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/btnPrincipal"
-            android:layout_width="match_parent"
+        <!-- Item Inicio -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/principal"
-            android:backgroundTint="#0000"/>
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <ImageButton
-            android:id="@+id/btnMapa"
-            android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/btnPrincipal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/principal"
+                android:backgroundTint="#0000"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Inicio" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicio"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <!-- Item Mapa -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/mapa"
-            android:backgroundTint="#0000"/>
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <ImageButton
-            android:id="@+id/btnComunidad"
-            android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/btnMapa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mapa"
+                android:backgroundTint="#0000"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Mapa" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mapa"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <!-- Item Comunidad -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/comunidad"
-            android:backgroundTint="#0000"/>
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <ImageButton
-            android:id="@+id/btnConfiguracion"
-            android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/btnComunidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/comunidad"
+                android:backgroundTint="#0000"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Comunidad" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comunidad"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <!-- Item Ajustes -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/configuracion"
-            android:backgroundTint="#0000"/>
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btnConfiguracion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/configuracion"
+                android:backgroundTint="#0000"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Ajustes" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ajustes"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

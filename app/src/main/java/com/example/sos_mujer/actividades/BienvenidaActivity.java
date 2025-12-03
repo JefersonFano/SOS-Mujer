@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.clases.Menu;
+import com.example.sos_mujer.sqlite.SosMujerSqlite;
 import com.example.sos_mujer.utils.LanguageHelper;
 
 public class BienvenidaActivity extends AppCompatActivity implements View.OnClickListener, Menu {
@@ -43,8 +44,21 @@ public class BienvenidaActivity extends AppCompatActivity implements View.OnClic
         lblPerfil = findViewById(R.id.lblPerfil);
 
         lblSaludo = findViewById(R.id.bieLblSaludo);
-        String usuario = getIntent().getStringExtra("usuario");
-        lblSaludo.setText("Hola " + usuario);
+        String nombre = getIntent().getStringExtra("nombre");
+        String apellido = getIntent().getStringExtra("apellido");
+
+        if (nombre == null || nombre.isEmpty() || apellido == null || apellido.isEmpty()) {
+            SosMujerSqlite db = new SosMujerSqlite(this);
+            nombre = db.getString("nombre");
+            apellido = db.getString("apellido");
+        }
+
+        String nombreCompleto = "";
+        if (nombre != null && !nombre.isEmpty() && apellido != null && !apellido.isEmpty()) {
+            nombreCompleto = nombre + " " + apellido.charAt(0) + ".";
+        }
+
+        lblSaludo.setText("Hola " + nombreCompleto);
 
         lblReportar.setOnClickListener(this);
         lblContacto.setOnClickListener(this);

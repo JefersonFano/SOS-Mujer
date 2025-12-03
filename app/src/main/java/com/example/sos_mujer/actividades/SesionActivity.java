@@ -44,8 +44,10 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
         SosMujerSqlite db = new SosMujerSqlite(this);
         if (db.recordarSesion()) {
             String nombre = db.getString("nombre");
+            String apellido = db.getString("apellido");
             Intent iBienvenida = new Intent(this, BienvenidaActivity.class);
-            iBienvenida.putExtra("usuario", nombre);
+            iBienvenida.putExtra("nombre", nombre);
+            iBienvenida.putExtra("apellido", apellido);
             startActivity(iBienvenida);
             finish();
             return; // salir del método para no cargar el layout
@@ -120,7 +122,8 @@ public class SesionActivity extends AppCompatActivity implements View.OnClickLis
                         }
 
                         Intent intent = new Intent(getApplicationContext(), BienvenidaActivity.class);
-                        intent.putExtra("usuario", usuario.getString("nombre"));
+                        intent.putExtra("nombre", usuario.getString("nombre"));
+                        intent.putExtra("apellido", usuario.getString("apellido"));
                         startActivity(intent);
                         finish();
                     } else {
