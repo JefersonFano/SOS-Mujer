@@ -31,14 +31,15 @@ import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
 public class ComunidadFragment extends Fragment {
 
-    private final static String urlMostrarReportes =
+    private final static String urlMostrar =
             "http://sos-mujer.atwebpages.com/ws/mostrarReportes.php";
 
     private RecyclerView recReportes;
@@ -47,19 +48,21 @@ public class ComunidadFragment extends Fragment {
     private ProgressBar progressCarga;
 
     private ReporteAdapter adapter;
-    public static ArrayList<Reporte> lista;
+    private ArrayList<Reporte> lista;
 
-    private boolean mostrarCercanos = false;
+    boolean mostrarCercanos = false;
     private double userLat = 0;
     private double userLon = 0;
+
     private static final double RADIO_KM = 3.0;
 
     FusedLocationProviderClient fusedLocation;
 
-    public ComunidadFragment() {}
+    public ComunidadFragment() { }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         View vista = inflater.inflate(R.layout.fragment_comunidad, container, false);
 
@@ -69,27 +72,49 @@ public class ComunidadFragment extends Fragment {
         progressCarga = vista.findViewById(R.id.progressCarga);
 
         lista = new ArrayList<>();
-        adapter = new ReporteAdapter(lista);
+        adapter = new ReporteAdapter(lista, getActivity());
+
         recReportes.setLayoutManager(new LinearLayoutManager(getContext()));
         recReportes.setAdapter(adapter);
 
         fusedLocation = LocationServices.getFusedLocationProviderClient(getActivity());
-        obtenerUbicacionUsuario();
+        obtenerUbicacion();
 
         spinnerFiltro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                mostrarCercanos = (position == 1);
-                progressCarga.setVisibility(View.VISIBLE);
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                mostrarCercanos = (pos == 1);
                 cargarReportes();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         return vista;
+    }
+
+    private void obtenerUbicacion() {
+
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
+            return;
+        }
+
+        fusedLocation.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                userLat = location.getLatitude();
+                userLon = location.getLongitude();
+
+                ReporteAdapter.userLat = userLat;
+                ReporteAdapter.userLon = userLon;
+
+                cargarReportes();
+            }
+        });
     }
 
     @Override
@@ -98,42 +123,20 @@ public class ComunidadFragment extends Fragment {
         cargarReportes();
     }
 
-    private void obtenerUbicacionUsuario() {
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
-
-            return;
-        }
-
-        fusedLocation.getLastLocation().addOnSuccessListener(location -> {
-            if (location != null) {
-
-                userLat = location.getLatitude();
-                userLon = location.getLongitude();
-
-                ReporteAdapter.userLat = userLat;
-                ReporteAdapter.userLon = userLon;
-            }
-        });
-    }
-
     private void cargarReportes() {
 
-        AsyncHttpClient cliente = new AsyncHttpClient();
+        progressCarga.setVisibility(View.VISIBLE);
 
-        cliente.get(urlMostrarReportes, null, new BaseJsonHttpResponseHandler() {
+        AsyncHttpClient cliente = new AsyncHttpClient();
+        cliente.get(urlMostrar, null, new BaseJsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, Object response) {
+            public void onSuccess(int statusCode, Header[] headers,
+                                  String rawJsonResponse, Object response) {
 
                 progressCarga.setVisibility(View.GONE);
 
                 try {
-
                     JSONArray json = new JSONArray(rawJsonResponse);
                     lista.clear();
 
@@ -142,25 +145,33 @@ public class ComunidadFragment extends Fragment {
                         double lat = json.getJSONObject(i).getDouble("latitud");
                         double lon = json.getJSONObject(i).getDouble("longitud");
 
-                        if (mostrarCercanos) {
-                            double dist = calcularDistancia(userLat, userLon, lat, lon);
-                            if (dist > RADIO_KM) continue;
-                        }
+                        double distancia = calcularDistancia(userLat, userLon, lat, lon);
 
-                        Date fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        if (mostrarCercanos && distancia > RADIO_KM)
+                            continue;
+
+                        Date fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                                Locale.getDefault())
                                 .parse(json.getJSONObject(i).getString("fecha"));
 
-                        lista.add(new Reporte(
+                        Reporte rep = new Reporte(
                                 json.getJSONObject(i).getInt("id"),
-                                json.getJSONObject(i).getString("foto"),
+                                json.getJSONObject(i).getString("media_url"),
+                                json.getJSONObject(i).getString("media_tipo"),
                                 json.getJSONObject(i).getString("tipo"),
                                 fecha,
                                 json.getJSONObject(i).getString("lugar"),
                                 json.getJSONObject(i).getString("descripcion"),
                                 lat,
                                 lon
-                        ));
+                        );
+
+                        rep.setDistancia(distancia);
+                        lista.add(rep);
                     }
+
+                    // ORDENAR POR FECHA MÁS RECIENTE
+                    Collections.sort(lista, (a, b) -> b.getFecha().compareTo(a.getFecha()));
 
                     adapter.notifyDataSetChanged();
                     txtTotal.setText("Total: " + lista.size() + " reportes");
@@ -171,8 +182,9 @@ public class ComunidadFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,
-                                  String rawJsonData, Object errorResponse) {
+            public void onFailure(int statusCode, Header[] headers,
+                                  Throwable throwable, String rawJsonData, Object errorResponse) {
+
                 progressCarga.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Error al cargar reportes", Toast.LENGTH_SHORT).show();
             }
@@ -185,7 +197,6 @@ public class ComunidadFragment extends Fragment {
     }
 
     private double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
-
         float[] res = new float[1];
         Location.distanceBetween(lat1, lon1, lat2, lon2, res);
         return res[0] / 1000;

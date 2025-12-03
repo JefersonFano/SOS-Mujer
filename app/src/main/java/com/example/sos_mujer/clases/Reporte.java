@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class Reporte {
     private int id;
-    private String foto;
+    private String mediaUrl;
+    private String mediaTipo;
     private String tipo;
     private Date fecha;
     private String lugar;
@@ -12,12 +13,17 @@ public class Reporte {
     private double latitud;
     private double longitud;
 
-    public Reporte() {
-    }
+    private double distancia;
 
-    public Reporte(int id, String foto, String tipo, Date fecha, String lugar, String descripcion, double latitud, double longitud) {
+    public Reporte() {}
+
+    public Reporte(int id, String mediaUrl, String mediaTipo, String tipo,
+                   Date fecha, String lugar, String descripcion,
+                   double latitud, double longitud) {
+
         this.id = id;
-        this.foto = foto;
+        this.mediaUrl = mediaUrl;
+        this.mediaTipo = mediaTipo;
         this.tipo = tipo;
         this.fecha = fecha;
         this.lugar = lugar;
@@ -29,8 +35,11 @@ public class Reporte {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public String getFoto() { return foto; }
-    public void setFoto(String foto) { this.foto = foto; }
+    public String getMediaUrl() { return mediaUrl; }
+    public void setMediaUrl(String mediaUrl) { this.mediaUrl = mediaUrl; }
+
+    public String getMediaTipo() { return mediaTipo; }
+    public void setMediaTipo(String mediaTipo) { this.mediaTipo = mediaTipo; }
 
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
@@ -49,4 +58,6 @@ public class Reporte {
 
     public double getLongitud() { return longitud; }
     public void setLongitud(double longitud) { this.longitud = longitud; }
+    public double getDistancia() { return distancia; }
+    public void setDistancia(double distancia) { this.distancia = distancia; }
 }
