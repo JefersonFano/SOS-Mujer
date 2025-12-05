@@ -25,10 +25,12 @@ import com.example.sos_mujer.servicios.LocationUpdatesService;
 import com.example.sos_mujer.sqlite.SosMujerSqlite;
 import com.example.sos_mujer.utils.EmergenciaManager;
 import com.example.sos_mujer.utils.LanguageHelper;
-import com.google.android.gms.location.FusedLocationProviderClient;
+import com.example.sos_mujer.utils.FontScaleHelper;
+
 import com.google.android.gms.location.LocationServices;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,26 +48,22 @@ public class PanicoActivity extends AppCompatActivity {
     private static final String URL_CONTACTOS =
             "http://sos-mujer.atwebpages.com/ws/mostrarContacto.php?usuario_id=";
 
-    private static final String BASE_URL_LIVE_LOCATION =
-            "http://sos-mujer.atwebpages.com/ws/live_location.php?usuario_id=";
+    private static final String URL_INICIAR =
+            "http://sos-mujer.atwebpages.com/ws/iniciar_emergencia.php";
 
-    private static final String URL_DETENER =
-            "http://sos-mujer.atwebpages.com/ws/detener_emergencia.php?usuario_id=";
+    private static final String URL_FINALIZAR =
+            "http://sos-mujer.atwebpages.com/ws/finalizar_emergencia.php";
 
     private Button btnPanico, btnDetener;
 
-    private FusedLocationProviderClient fusedLocationClient;
     private int usuarioId;
+    private SosMujerSqlite db;
 
+    // Doble pulsación botón físico
     private static final int MAX_PRESIONES = 3;
     private int contadorPresiones = 0;
     private long tiempoUltimaPresion = 0;
     private static final long TIEMPO_MAXIMO = 1000;
-
-    private static final int REQ_LOC = 100;
-    private static final int REQ_SMS = 101;
-
-    private SosMujerSqlite db;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -75,7 +73,7 @@ public class PanicoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        com.example.sos_mujer.utils.FontScaleHelper.applyFontScale(this);
+        FontScaleHelper.applyFontScale(this);
         setContentView(R.layout.activity_panico);
 
         btnPanico = findViewById(R.id.btnPanico);
@@ -92,15 +90,13 @@ public class PanicoActivity extends AppCompatActivity {
         solicitarAppSmsPredeterminada();
         verificarPermisos();
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        btnPanico.setOnClickListener(v -> dispararEmergencia());
+        btnPanico.setOnClickListener(v -> iniciarEmergenciaEnServidor());
         btnDetener.setOnClickListener(v -> mostrarDialogoPassword());
     }
 
-    // ==========================
-    //   APP SMS POR DEFECTO
-    // ==========================
+    // ================
+    // SOLICITAR APP SMS
+    // ================
     private void solicitarAppSmsPredeterminada() {
         try {
             String actual = Telephony.Sms.getDefaultSmsPackage(this);
@@ -109,11 +105,12 @@ public class PanicoActivity extends AppCompatActivity {
                 intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, getPackageName());
                 startActivity(intent);
             }
-        } catch (Exception e) {
-            Log.e("SMS_DEFAULT", "No se pudo establecer como app SMS por defecto", e);
-        }
+        } catch (Exception ignored) {}
     }
 
+    // =====================
+    // PERMISOS NECESARIOS
+    // =====================
     private void verificarPermisos() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED ||
@@ -123,7 +120,7 @@ public class PanicoActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQ_LOC);
+                    100);
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
@@ -131,65 +128,77 @@ public class PanicoActivity extends AppCompatActivity {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.SEND_SMS},
-                    REQ_SMS);
+                    101);
         }
     }
 
-    // ==========================
-    //    INICIAR EMERGENCIA
-    // ==========================
-    private void dispararEmergencia() {
+    // ======================================================
+    //   ➤ INICIAR EMERGENCIA: obtiene emergencia_id del WS
+    // ======================================================
+    private void iniciarEmergenciaEnServidor() {
 
         if (EmergenciaManager.esEmergenciaActiva(this)) {
             Toast.makeText(this, "Ya tienes una emergencia activa", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        EmergenciaManager.activarEmergencia(this);
-        obtenerUbicacionYEnviarMensajes(true);
-    }
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("usuario_id", usuarioId);
 
-    private void obtenerUbicacionYEnviarMensajes(boolean iniciarServicio) {
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        client.post(URL_INICIAR, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-            Toast.makeText(this, "Sin permiso de ubicación", Toast.LENGTH_SHORT).show();
-            return;
-        }
+                try {
+                    if (response.getBoolean("ok")) {
+                        int emergenciaId = response.getInt("emergencia_id");
 
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location == null) {
-                Toast.makeText(this,
-                        "No se pudo obtener ubicación", Toast.LENGTH_SHORT).show();
-                return;
+                        EmergenciaManager.activarEmergencia(PanicoActivity.this, emergenciaId);
+
+                        obtenerUbicacionYEnviarMensajes(false); // Solo enviamos SMS
+                        iniciarServicioUbicacionEnVivo();       // Enviar ubicaciones continuas
+                    }
+                } catch (Exception e) {
+                    Log.e("PANICO", "Error iniciando emergencia", e);
+                }
             }
-
-            double lat = location.getLatitude();
-            double lon = location.getLongitude();
-
-            String direccion = obtenerDireccion(lat, lon);
-            String trackingUrl = BASE_URL_LIVE_LOCATION + usuarioId;
-
-            enviarMensajes(direccion, trackingUrl);
-
-            if (iniciarServicio) iniciarServicioUbicacionEnVivo();
         });
     }
 
+    // ==========================================
+    //   ENVÍO DE SMS + OBTENER DIRECCIÓN
+    // ==========================================
     private String obtenerDireccion(double lat, double lon) {
         try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> list = geocoder.getFromLocation(lat, lon, 1);
+            Geocoder g = new Geocoder(this, Locale.getDefault());
+            List<Address> list = g.getFromLocation(lat, lon, 1);
 
             if (list != null && !list.isEmpty()) {
                 return list.get(0).getAddressLine(0);
             }
-
         } catch (Exception ignored) {}
 
         return "Lat: " + lat + ", Lon: " + lon;
+    }
+
+    private void obtenerUbicacionYEnviarMensajes(boolean iniciarServicio) {
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        LocationServices.getFusedLocationProviderClient(this)
+                .getLastLocation().addOnSuccessListener(location -> {
+
+                    if (location == null) return;
+
+                    String direccion = obtenerDireccion(location.getLatitude(), location.getLongitude());
+                    String trackingUrl = "http://sos-mujer.atwebpages.com/ws/live_location.php?usuario_id=" + usuarioId;
+
+                    enviarMensajes(direccion, trackingUrl);
+                });
     }
 
     private void enviarMensajes(String direccion, String trackingUrl) {
@@ -198,7 +207,7 @@ public class PanicoActivity extends AppCompatActivity {
         client.get(URL_CONTACTOS + usuarioId, new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray contacts) {
+            public void onSuccess(int status, Header[] h, JSONArray contacts) {
 
                 if (contacts.length() == 0) {
                     Toast.makeText(PanicoActivity.this,
@@ -206,25 +215,26 @@ public class PanicoActivity extends AppCompatActivity {
                     return;
                 }
 
-                String mensaje =
-                        "¡EMERGENCIA! Necesito ayuda urgente.\n" +
-                                "Ubicación: " + direccion + "\n" +
-                                "Ubicación en vivo: " + trackingUrl + "\n" +
-                                "SOS Mujer";
+                String msg = "¡EMERGENCIA! Necesito ayuda urgente.\n"
+                        + "Ubicación: " + direccion + "\n"
+                        + "Ubicación en vivo: " + trackingUrl + "\n"
+                        + "SOS Mujer";
+
+                SmsManager sms = SmsManager.getDefault();
 
                 for (int i = 0; i < contacts.length(); i++) {
                     try {
                         JSONObject c = contacts.getJSONObject(i);
                         String numero = c.getString("numero");
 
-                        if (numero.length() == 9 && !numero.startsWith("+51")) {
+                        if (numero.length() == 9 && !numero.startsWith("+51"))
                             numero = "+51" + numero;
-                        }
 
-                        enviarSMS(numero, mensaje);
+                        ArrayList<String> partes = sms.divideMessage(msg);
+                        sms.sendMultipartTextMessage(numero, null, partes, null, null);
 
                     } catch (Exception e) {
-                        Log.e("SMS", "Error mensaje a contacto", e);
+                        Log.e("SMS", "Error enviando SMS", e);
                     }
                 }
 
@@ -234,51 +244,37 @@ public class PanicoActivity extends AppCompatActivity {
         });
     }
 
-    private void enviarSMS(String numero, String mensaje) {
-        try {
-            SmsManager sms = SmsManager.getDefault();
-            ArrayList<String> partes = sms.divideMessage(mensaje);
-            sms.sendMultipartTextMessage(numero, null, partes, null, null);
-            Log.d("SMS", "SMS enviado -> " + numero);
-
-        } catch (Exception e) {
-            Log.e("SMS", "ERROR SMS", e);
-        }
-    }
-
+    // ============================
+    //   INICIAR SERVICIO DE GPS
+    // ============================
     private void iniciarServicioUbicacionEnVivo() {
         Intent i = new Intent(this, LocationUpdatesService.class);
         i.putExtra("usuario_id", usuarioId);
         ContextCompat.startForegroundService(this, i);
     }
 
-    // ==========================
-    //     DETENER EMERGENCIA
-    // ==========================
+    // =============================
+    //   DETENER LA EMERGENCIA
+    // =============================
     private void mostrarDialogoPassword() {
 
         if (!EmergenciaManager.esEmergenciaActiva(this)) {
-            Toast.makeText(this, "No hay una emergencia activa", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No hay emergencia activa", Toast.LENGTH_SHORT).show();
             return;
         }
 
         final EditText input = new EditText(this);
         input.setHint("Contraseña");
-        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT |
-                android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setInputType(129);
 
         new AlertDialog.Builder(this)
                 .setTitle("Detener emergencia")
                 .setMessage("Ingresa tu contraseña para detener la emergencia")
                 .setView(input)
                 .setPositiveButton("Aceptar", (dialog, which) -> {
-                    String passIngresada = input.getText().toString().trim();
-                    if (passIngresada.isEmpty()) {
-                        Toast.makeText(this, "Contraseña vacía", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
 
-                    String hashGuardado = db.getPassword(); // SHA-256 guardado
+                    String passIngresada = input.getText().toString().trim();
+                    String hashGuardado = db.getPassword();
                     String hashIngresada = sha256(passIngresada);
 
                     if (!hashIngresada.equals(hashGuardado)) {
@@ -286,7 +282,6 @@ public class PanicoActivity extends AppCompatActivity {
                         return;
                     }
 
-                    // Contraseña OK → detener emergencia
                     detenerEmergencia();
                 })
                 .setNegativeButton("Cancelar", null)
@@ -295,67 +290,65 @@ public class PanicoActivity extends AppCompatActivity {
 
     private void detenerEmergencia() {
 
+        int emergenciaId = EmergenciaManager.getEmergenciaId(this);
+
         // Detener servicio
-        Intent i = new Intent(this, LocationUpdatesService.class);
-        stopService(i);
+        stopService(new Intent(this, LocationUpdatesService.class));
 
-        // Notificar al servidor (set activo = 0)
+        // Notificar al servidor
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(URL_DETENER + usuarioId, new JsonHttpResponseHandler() {
+        RequestParams p = new RequestParams();
+        p.put("emergencia_id", emergenciaId);
 
+        client.post(URL_FINALIZAR, p, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Toast.makeText(PanicoActivity.this,
-                        "Emergencia finalizada", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject e) {
-                Toast.makeText(PanicoActivity.this,
-                        "No se pudo notificar al servidor, inténtalo luego",
-                        Toast.LENGTH_SHORT).show();
+            public void onSuccess(int s, Header[] h, JSONObject r) {
+                Toast.makeText(PanicoActivity.this, "Emergencia finalizada", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Limpiar estado local
         EmergenciaManager.desactivarEmergencia(this);
     }
 
-    // ==========================
-    //      SHA-256
-    // ==========================
+    // ====================
+    // SHA-256
+    // ====================
     private String sha256(String base) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(base.getBytes());
-            StringBuilder hexString = new StringBuilder();
+            StringBuilder hex = new StringBuilder();
 
             for (byte b : hash) {
                 String h = Integer.toHexString(0xFF & b);
-                if (h.length() == 1) hexString.append('0');
-                hexString.append(h);
+                if (h.length() == 1) hex.append('0');
+                hex.append(h);
             }
-            return hexString.toString();
+            return hex.toString();
+
         } catch (NoSuchAlgorithmException ex) {
             return "";
         }
     }
 
-    // =================================
-    // ATAJO: 3 VECES VOLUMEN ABAJO
-    // =================================
+    // ====================================================
+    // ATAJO: 3 PRESIONES DE BOTÓN VOLUMEN ABAJO
+    // ====================================================
     @Override
     public boolean onKeyDown(int key, KeyEvent e) {
         if (key == KeyEvent.KEYCODE_VOLUME_DOWN) {
+
             long t = System.currentTimeMillis();
 
-            if (t - tiempoUltimaPresion < TIEMPO_MAXIMO) contadorPresiones++;
-            else contadorPresiones = 1;
+            if (t - tiempoUltimaPresion < TIEMPO_MAXIMO)
+                contadorPresiones++;
+            else
+                contadorPresiones = 1;
 
             tiempoUltimaPresion = t;
 
             if (contadorPresiones >= MAX_PRESIONES) {
-                dispararEmergencia();
+                iniciarEmergenciaEnServidor();
                 contadorPresiones = 0;
                 return true;
             }

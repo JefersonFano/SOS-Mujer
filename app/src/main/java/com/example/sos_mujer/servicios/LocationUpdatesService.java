@@ -20,18 +20,22 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.sos_mujer.R;
 import com.example.sos_mujer.actividades.PanicoActivity;
+import com.example.sos_mujer.utils.EmergenciaManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import cz.msebera.android.httpclient.Header;
 
 public class LocationUpdatesService extends Service {
 
-    private static final String CHANNEL_ID = "sos_mujer_tracking_channel";
-    private static final int NOTIFICATION_ID = 12345;
+    private static final String CHANNEL_ID = "sos_tracking";
+    private static final int NOTIF_ID = 55;
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
@@ -54,97 +58,95 @@ public class LocationUpdatesService extends Service {
             return START_NOT_STICKY;
         }
 
-        iniciarNotificacionForeground();
-        iniciarActualizacionUbicacion();
+        iniciarNotificacion();
+        iniciarTracking();
 
         return START_STICKY;
     }
 
-    private void iniciarNotificacionForeground() {
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    private void iniciarNotificacion() {
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel canal = new NotificationChannel(
                     CHANNEL_ID,
-                    "Ubicación en vivo - SOS Mujer",
+                    "Seguimiento SOS Mujer",
                     NotificationManager.IMPORTANCE_LOW
             );
-            manager.createNotificationChannel(canal);
+            nm.createNotificationChannel(canal);
         }
 
         Intent intent = new Intent(this, PanicoActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, intent, PendingIntent.FLAG_IMMUTABLE
-        );
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         Notification notif = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Enviando ubicación en vivo…")
-                .setContentText("Tus contactos pueden ver tu ubicación en tiempo real")
+                .setContentTitle("Emergencia activa")
+                .setContentText("Enviando ubicación en vivo…")
                 .setSmallIcon(R.drawable.ic_location)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pi)
                 .setOngoing(true)
                 .build();
 
-        startForeground(NOTIFICATION_ID, notif);
+        startForeground(NOTIF_ID, notif);
     }
 
-    private void iniciarActualizacionUbicacion() {
+    private void iniciarTracking() {
 
-        LocationRequest request = LocationRequest.create()
-                .setInterval(5000) // cada 5 segundos
+        LocationRequest req = LocationRequest.create()
+                .setInterval(5000)
                 .setFastestInterval(3000)
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult result) {
-
-                Location location = result.getLastLocation();
-                if (location != null) {
-                    enviarUbicacionAlServidor(
+                Location loc = result.getLastLocation();
+                if (loc != null) {
+                    enviarUbicacion(
                             usuarioId,
-                            location.getLatitude(),
-                            location.getLongitude()
+                            loc.getLatitude(),
+                            loc.getLongitude()
                     );
                 }
             }
         };
 
-        if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                        this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             stopSelf();
             return;
         }
 
-        fusedLocationClient.requestLocationUpdates(
-                request,
-                locationCallback,
-                null
-        );
+        fusedLocationClient.requestLocationUpdates(req, locationCallback, null);
     }
 
-    private void enviarUbicacionAlServidor(int usuarioId, double lat, double lon) {
+    private void enviarUbicacion(int usuarioId, double lat, double lon) {
+
+        int emergenciaId = EmergenciaManager.getEmergenciaId(this);
+        if (emergenciaId == -1) {
+            Log.e("SOS", "No hay emergencia_id activo");
+            return;
+        }
 
         String url = "http://sos-mujer.atwebpages.com/ws/actualizar_ubicacion.php";
 
         AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
+        RequestParams p = new RequestParams();
 
-        params.put("usuario_id", usuarioId);
-        params.put("latitud", lat);
-        params.put("longitud", lon);
+        p.put("usuario_id", usuarioId);
+        p.put("latitud", lat);
+        p.put("longitud", lon);
+        p.put("emergencia_id", emergenciaId);
 
-        client.post(url, params, new com.loopj.android.http.JsonHttpResponseHandler() {
+        client.post(url, p, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int s, cz.msebera.android.httpclient.Header[] h, org.json.JSONObject response) {
-                Log.d("LiveLocation", "Ubicación guardada");
+            public void onSuccess(int s, Header[] h, org.json.JSONObject r) {
+                Log.d("SOS", "Ubicación enviada");
             }
 
             @Override
-            public void onFailure(int s, cz.msebera.android.httpclient.Header[] h, Throwable t, org.json.JSONObject e) {
-                Log.e("LiveLocation", "Error al enviar ubicación");
+            public void onFailure(int s, Header[] h, Throwable t, org.json.JSONObject e) {
+                Log.e("SOS", "Error enviando ubicación");
             }
         });
     }
@@ -152,9 +154,8 @@ public class LocationUpdatesService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (locationCallback != null && fusedLocationClient != null) {
+        if (locationCallback != null)
             fusedLocationClient.removeLocationUpdates(locationCallback);
-        }
     }
 
     @Nullable
